@@ -18,7 +18,7 @@ struct HomeView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: .zero) {
                 if shouldShowFullScreenError, let message = viewModel.errorMessage {
                     errorView(message: message)
                 } else {
@@ -31,6 +31,8 @@ struct HomeView: View {
                             router.navigate(to: .detail(mediaId: mediaId))
                         }
                     )
+                    .padding(.top, 16)
+                    .border(.red)
 
                     PopularSection(
                         movies: viewModel.popularMovies,
@@ -41,29 +43,27 @@ struct HomeView: View {
                             router.navigate(to: .detail(mediaId: mediaId))
                         }
                     )
+                    .padding(.top, 24)
+                    .border(.blue)
                 }
             }
-            .padding(.vertical)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("FilmKu")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.accentColor)
+                Image("LaunchLogo")
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button {
                 } label: {
-                    Image(systemName: "line.3.horizontal.decrease")
+                    Image("menu")
                         .foregroundStyle(Color.accentColor)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                 } label: {
-                    Image(systemName: "bell")
+                    Image("notif")
                         .foregroundStyle(Color.accentColor)
                 }
             }
@@ -87,7 +87,7 @@ struct HomeView: View {
                 .font(.largeTitle)
                 .foregroundStyle(.secondary)
             Text(message)
-                .font(.subheadline)
+                .font(.merriweather(.subheadline))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             Button("Retry") {

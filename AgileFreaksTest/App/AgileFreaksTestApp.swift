@@ -23,30 +23,31 @@ struct AgileFreaksTestApp: App {
                 }
                 .environment(router)
                 .tabItem {
-                    Label("", systemImage: "film")
+                    Image("tab1")
                 }
 
                 NavigationStack {
                     Text("Search")
-                        .font(.title)
+                        .font(.merriweather(.title, weight: .bold))
                         .foregroundStyle(.secondary)
                         .navigationTitle("Search")
                 }
                 .tabItem {
-                    Label("", systemImage: "magnifyingglass")
+                    Image("tab2")
                 }
 
                 NavigationStack {
                     Text("Saved")
-                        .font(.title)
+                        .font(.merriweather(.title, weight: .bold))
                         .foregroundStyle(.secondary)
                         .navigationTitle("Saved")
                 }
                 .tabItem {
-                    Label("", systemImage: "bookmark")
+                    Image("tab3")
                 }
             }
             .tint(Color.accentColor)
+            .environment(\.font, Font.merriweather(.body))
             .onAppear {
                 guard !didMarkRootAppearance else { return }
                 didMarkRootAppearance = true

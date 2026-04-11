@@ -59,8 +59,7 @@ private struct CastCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
 
             Text(character.name?.full ?? "Unknown")
-                .font(.caption)
-                .fontWeight(.medium)
+                .font(.merriweather(.caption, weight: .medium))
                 .foregroundStyle(.primary)
                 .lineLimit(2)
                 .multilineTextAlignment(.center)

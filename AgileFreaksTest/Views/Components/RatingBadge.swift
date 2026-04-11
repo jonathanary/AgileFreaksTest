@@ -9,7 +9,7 @@ struct RatingBadge: View {
                 .foregroundStyle(.yellow)
                 .font(.caption)
             Text("\(score)/10 IMDb")
-                .font(.caption)
+                .font(.merriweather(.caption))
                 .foregroundStyle(.secondary)
         }
     }

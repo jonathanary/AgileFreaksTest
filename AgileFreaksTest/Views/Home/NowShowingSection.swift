@@ -28,8 +28,7 @@ struct NowShowingSection: View {
                                     )
 
                                     Text(movie.displayTitle)
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
+                                        .font(.merriweather(.subheadline, weight: .semibold))
                                         .foregroundStyle(.primary)
                                         .lineLimit(2)
                                         .multilineTextAlignment(.leading)
@@ -77,7 +76,7 @@ struct NowShowingSection: View {
     private func sectionErrorView(message: String, onRetry: @escaping () -> Void) -> some View {
         VStack(spacing: 12) {
             Text(message)
-                .font(.subheadline)
+                .font(.merriweather(.subheadline))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
@@ -97,8 +96,7 @@ struct SectionHeader: View {
     var body: some View {
         HStack {
             Text(title)
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(.merriweather(.title3, weight: .bold))
                 .foregroundStyle(Color.accentColor)
 
             Spacer()
@@ -107,7 +105,7 @@ struct SectionHeader: View {
                 Button("See more") {
                     action?()
                 }
-                .font(.caption)
+                .font(.merriweather(.caption))
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 4)

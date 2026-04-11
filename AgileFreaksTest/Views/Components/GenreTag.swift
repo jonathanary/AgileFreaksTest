@@ -5,8 +5,7 @@ struct GenreTag: View {
 
     var body: some View {
         Text(title.uppercased())
-            .font(.caption2)
-            .fontWeight(.semibold)
+            .font(.merriweather(.caption2, weight: .semibold))
             .foregroundStyle(Color.accentColor)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)

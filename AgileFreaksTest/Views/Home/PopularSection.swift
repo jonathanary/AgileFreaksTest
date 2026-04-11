@@ -68,7 +68,7 @@ struct PopularSection: View {
     private func sectionErrorView(message: String, onRetry: @escaping () -> Void) -> some View {
         VStack(spacing: 12) {
             Text(message)
-                .font(.subheadline)
+                .font(.merriweather(.subheadline))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
@@ -94,7 +94,7 @@ private struct PopularMovieRow: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.displayTitle)
-                    .font(.headline)
+                    .font(.merriweather(.headline, weight: .bold))
                     .foregroundStyle(.primary)
                     .lineLimit(2)
 
@@ -114,7 +114,7 @@ private struct PopularMovieRow: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Text(movie.formattedDuration)
-                            .font(.caption)
+                            .font(.merriweather(.caption))
                             .foregroundStyle(.secondary)
                     }
                 }

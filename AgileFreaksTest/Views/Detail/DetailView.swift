@@ -10,6 +10,7 @@ struct DetailView: View {
         Group {
             if viewModel.isLoading {
                 ProgressView("Loading...")
+                    .font(.merriweather(.body))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let error = viewModel.errorMessage {
                 VStack(spacing: 16) {
@@ -17,7 +18,7 @@ struct DetailView: View {
                         .font(.largeTitle)
                         .foregroundStyle(.secondary)
                     Text(error)
-                        .font(.subheadline)
+                        .font(.merriweather(.subheadline))
                         .foregroundStyle(.secondary)
                     Button("Retry") {
                         Task { await viewModel.loadDetail(id: mediaId) }
@@ -127,8 +128,7 @@ struct DetailView: View {
                             .font(.system(size: 48))
                             .foregroundStyle(.white)
                         Text("Play Trailer")
-                            .font(.caption)
-                            .fontWeight(.medium)
+                            .font(.merriweather(.caption, weight: .medium))
                             .foregroundStyle(.white)
                     }
                 }
@@ -141,8 +141,7 @@ struct DetailView: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top) {
                 Text(media.displayTitle)
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(.merriweather(.title2, weight: .bold))
 
                 Spacer()
 
@@ -181,12 +180,11 @@ struct DetailView: View {
     private func descriptionSection(for media: Media) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Description")
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(.merriweather(.title3, weight: .bold))
                 .foregroundStyle(Color.accentColor)
 
             Text(media.cleanDescription)
-                .font(.subheadline)
+                .font(.merriweather(.subheadline))
                 .foregroundStyle(.secondary)
                 .lineSpacing(4)
         }
@@ -200,11 +198,10 @@ private struct InfoColumn: View {
     var body: some View {
         VStack(spacing: 4) {
             Text(title)
-                .font(.caption)
+                .font(.merriweather(.caption))
                 .foregroundStyle(.secondary)
             Text(value)
-                .font(.subheadline)
-                .fontWeight(.medium)
+                .font(.merriweather(.subheadline, weight: .medium))
         }
     }
 }

@@ -3,6 +3,11 @@ import SwiftUI
 @main
 struct AgileFreaksTestApp: App {
     @State private var router = Router()
+    @State private var didMarkRootAppearance = false
+
+    init() {
+        Log.debug("App init", category: .app)
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -42,6 +47,11 @@ struct AgileFreaksTestApp: App {
                 }
             }
             .tint(Color.accentColor)
+            .onAppear {
+                guard !didMarkRootAppearance else { return }
+                didMarkRootAppearance = true
+                Log.debug("Root TabView appeared", category: .app)
+            }
         }
     }
 }

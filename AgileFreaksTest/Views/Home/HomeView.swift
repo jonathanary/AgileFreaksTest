@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @State private var didMarkHomeAppearance = false
     @Environment(Router.self) private var router
 
     private var loadsAreComplete: Bool {
@@ -67,8 +68,14 @@ struct HomeView: View {
                 }
             }
         }
+        .onAppear {
+            guard !didMarkHomeAppearance else { return }
+            didMarkHomeAppearance = true
+            Log.debug("HomeView appeared", category: .home)
+        }
         .task {
             if viewModel.nowShowingMovies.isEmpty, viewModel.popularMovies.isEmpty {
+                Log.debug("HomeView requested initial home load", category: .home)
                 await viewModel.loadMovies()
             }
         }

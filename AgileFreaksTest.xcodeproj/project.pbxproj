@@ -25,6 +25,7 @@
 		4B0000100000000000FB0010 /* PosterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000100000000000FA0010 /* PosterCard.swift */; };
 		4B0000110000000000FB0011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A0000110000000000FA0011 /* Assets.xcassets */; };
 		4B0000120000000000FB0012 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A0000120000000000FA0012 /* Preview Assets.xcassets */; };
+		4B0000140000000000FB0014 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000140000000000FA0014 /* Logger.swift */; };
 		E94B2D072F8925540059DB18 /* MediaTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D062F8925540059DB18 /* MediaTitle.swift */; };
 		E94B2D092F8925850059DB18 /* CoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D082F8925850059DB18 /* CoverImage.swift */; };
 		E94B2D0B2F8925AA0059DB18 /* MediaTrailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D0A2F8925AA0059DB18 /* MediaTrailer.swift */; };
@@ -63,6 +64,7 @@
 		4A0000110000000000FA0011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A0000120000000000FA0012 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4A0000130000000000FA0013 /* AgileFreaksTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileFreaksTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A0000140000000000FA0014 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E94B2D062F8925540059DB18 /* MediaTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTitle.swift; sourceTree = "<group>"; };
 		E94B2D082F8925850059DB18 /* CoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverImage.swift; sourceTree = "<group>"; };
 		E94B2D0A2F8925AA0059DB18 /* MediaTrailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTrailer.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				4A0000010000000000FA0001 /* AgileFreaksTestApp.swift */,
+				4A0000140000000000FA0014 /* Logger.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				E94B2D152F8926260059DB18 /* CharacterImage.swift in Sources */,
 				E94B2D1F2F8926DE0059DB18 /* PageData.swift in Sources */,
 				4B0000090000000000FB0009 /* HomeView.swift in Sources */,
+				4B0000140000000000FB0014 /* Logger.swift in Sources */,
 				4B000000000000000AFB000A /* NowShowingSection.swift in Sources */,
 				4B000000000000000BFB000B /* PopularSection.swift in Sources */,
 				4B000000000000000CFB000C /* DetailView.swift in Sources */,
@@ -488,11 +492,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AgileFreaksTest/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = ZC3BXXKS8N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AgileFreaksTest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -517,11 +522,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AgileFreaksTest/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = ZC3BXXKS8N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AgileFreaksTest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

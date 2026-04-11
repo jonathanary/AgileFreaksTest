@@ -26,6 +26,7 @@ final class HomeViewModel {
     }
 
     func loadMovies() async {
+        Log.debug("HomeViewModel.loadMovies started", category: .home)
         errorMessage = nil
         nowShowingError = nil
         popularError = nil
@@ -46,6 +47,11 @@ final class HomeViewModel {
         } else {
             errorMessage = nil
         }
+
+        Log.debug(
+            "HomeViewModel.loadMovies finished (nowShowing: \(nowShowingMovies.count), popular: \(popularMovies.count))",
+            category: .home
+        )
     }
 
     private func loadNowShowingSection() async {
@@ -53,6 +59,8 @@ final class HomeViewModel {
         nowShowingMovies = result.movies
         isLoadingNowShowing = false
         nowShowingError = result.error
+        let status = result.error == nil ? "success" : "failed"
+        Log.debug("Now Showing load \(status) (\(result.movies.count) items)", category: .home)
     }
 
     private func loadPopularSection() async {
@@ -60,6 +68,8 @@ final class HomeViewModel {
         popularMovies = result.movies
         isLoadingPopular = false
         popularError = result.error
+        let status = result.error == nil ? "success" : "failed"
+        Log.debug("Popular load \(status) (\(result.movies.count) items)", category: .home)
     }
 
     private func fetchMovies(query: String) async -> (movies: [Media], error: String?) {

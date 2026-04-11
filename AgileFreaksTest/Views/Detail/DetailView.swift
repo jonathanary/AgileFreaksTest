@@ -60,22 +60,34 @@ struct DetailView: View {
 
     private func content(for media: Media) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(spacing: .zero) {
                 heroBanner(for: media)
-                movieInfo(for: media)
-                    .padding(.horizontal)
 
-                if !media.cleanDescription.isEmpty {
-                    descriptionSection(for: media)
-                        .padding(.horizontal)
+                VStack(alignment: .leading, spacing: 20) {
+                    movieInfo(for: media)
+
+                    if !media.cleanDescription.isEmpty {
+                        descriptionSection(for: media)
+                    }
+
+                    CastSection(characters: media.characters)
                 }
-
-                CastSection(characters: media.characters)
-
-                Spacer(minLength: 20)
+                .padding(.horizontal)
+                .padding(.top, 24)
+                .padding(.bottom, 20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(.systemBackground))
+                .clipShape(
+                    UnevenRoundedRectangle(
+                        topLeadingRadius: 24,
+                        topTrailingRadius: 24
+                    )
+                )
+                .offset(y: -24)
             }
         }
         .ignoresSafeArea(edges: .top)
+        .background(Color(.systemBackground))
     }
 
     private func heroBanner(for media: Media) -> some View {
@@ -95,7 +107,8 @@ struct DetailView: View {
                         .fill(.gray.opacity(0.3))
                 }
             }
-            .frame(height: 280)
+            .containerRelativeFrame(.horizontal)
+            .frame(height: 300)
             .clipped()
             .overlay {
                 LinearGradient(
@@ -121,6 +134,7 @@ struct DetailView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
 
     private func movieInfo(for media: Media) -> some View {

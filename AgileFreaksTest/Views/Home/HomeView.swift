@@ -25,8 +25,10 @@ struct HomeView: View {
                     NowShowingSection(
                         movies: viewModel.nowShowingMovies,
                         isLoading: viewModel.isLoadingNowShowing,
+                        isLoadingMore: viewModel.isLoadingMoreNowShowing,
                         loadError: viewModel.nowShowingError,
                         onRetry: { Task { await viewModel.loadMovies() } },
+                        onLoadMore: { Task { await viewModel.loadMoreNowShowing() } },
                         onMovieTap: { mediaId in
                             router.navigate(to: .detail(mediaId: mediaId))
                         }
@@ -37,8 +39,10 @@ struct HomeView: View {
                     PopularSection(
                         movies: viewModel.popularMovies,
                         isLoading: viewModel.isLoadingPopular,
+                        isLoadingMore: viewModel.isLoadingMorePopular,
                         loadError: viewModel.popularError,
                         onRetry: { Task { await viewModel.loadMovies() } },
+                        onLoadMore: { Task { await viewModel.loadMorePopular() } },
                         onMovieTap: { mediaId in
                             router.navigate(to: .detail(mediaId: mediaId))
                         }

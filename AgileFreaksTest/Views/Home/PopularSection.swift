@@ -3,8 +3,10 @@ import SwiftUI
 struct PopularSection: View {
     let movies: [Media]
     let isLoading: Bool
+    let isLoadingMore: Bool
     let loadError: String?
     let onRetry: () -> Void
+    let onLoadMore: () -> Void
     let onMovieTap: (Int) -> Void
 
     var body: some View {
@@ -29,6 +31,17 @@ struct PopularSection: View {
                             PopularMovieRow(movie: movie)
                         }
                         .buttonStyle(.plain)
+                        .onAppear {
+                            if movie.id == movies.last?.id {
+                                onLoadMore()
+                            }
+                        }
+                    }
+
+                    if isLoadingMore {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
                     }
                 }
                 .padding(.horizontal)
@@ -180,8 +193,22 @@ struct FlowLayout: Layout {
     PopularSection(
         movies: Media.mockList,
         isLoading: false,
+        isLoadingMore: false,
         loadError: nil,
         onRetry: {},
+        onLoadMore: {},
+        onMovieTap: { _ in }
+    )
+}
+
+#Preview("Loading more") {
+    PopularSection(
+        movies: Media.mockList,
+        isLoading: false,
+        isLoadingMore: true,
+        loadError: nil,
+        onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }
@@ -190,8 +217,10 @@ struct FlowLayout: Layout {
     PopularSection(
         movies: [],
         isLoading: true,
+        isLoadingMore: false,
         loadError: nil,
         onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }
@@ -200,8 +229,10 @@ struct FlowLayout: Layout {
     PopularSection(
         movies: [],
         isLoading: false,
+        isLoadingMore: false,
         loadError: "Could not load popular titles.",
         onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }

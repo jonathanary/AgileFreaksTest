@@ -3,8 +3,10 @@ import SwiftUI
 struct NowShowingSection: View {
     let movies: [Media]
     let isLoading: Bool
+    let isLoadingMore: Bool
     let loadError: String?
     let onRetry: () -> Void
+    let onLoadMore: () -> Void
     let onMovieTap: (Int) -> Void
 
     private static let movieTitleSize: CGFloat = 14
@@ -52,6 +54,16 @@ struct NowShowingSection: View {
                                 }
                             }
                             .buttonStyle(.plain)
+                            .onAppear {
+                                if movie.id == movies.last?.id {
+                                    onLoadMore()
+                                }
+                            }
+                        }
+
+                        if isLoadingMore {
+                            ProgressView()
+                                .frame(width: 48, height: 212)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -108,8 +120,22 @@ struct NowShowingSection: View {
     NowShowingSection(
         movies: Media.mockList,
         isLoading: false,
+        isLoadingMore: false,
         loadError: nil,
         onRetry: {},
+        onLoadMore: {},
+        onMovieTap: { _ in }
+    )
+}
+
+#Preview("Loading more") {
+    NowShowingSection(
+        movies: Media.mockList,
+        isLoading: false,
+        isLoadingMore: true,
+        loadError: nil,
+        onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }
@@ -118,8 +144,10 @@ struct NowShowingSection: View {
     NowShowingSection(
         movies: [],
         isLoading: true,
+        isLoadingMore: false,
         loadError: nil,
         onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }
@@ -128,8 +156,10 @@ struct NowShowingSection: View {
     NowShowingSection(
         movies: [],
         isLoading: false,
+        isLoadingMore: false,
         loadError: "Could not load movies.",
         onRetry: {},
+        onLoadMore: {},
         onMovieTap: { _ in }
     )
 }

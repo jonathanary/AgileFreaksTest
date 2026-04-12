@@ -7,9 +7,18 @@ struct NowShowingSection: View {
     let onRetry: () -> Void
     let onMovieTap: (Int) -> Void
 
+    private static let movieTitleSize: CGFloat = 14
+    /// Matches `PosterCard` width so wrapping uses a definite measure inside `ScrollView`/`LazyHStack`.
+    private static let movieTitleWidth: CGFloat = 143
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(title: "Now Showing")
+        VStack(alignment: .leading, spacing: .zero) {
+            HStack(alignment: .center) {
+                SectionHeader(title: "Now Showing")
+                Spacer(minLength: 8)
+                SectionSeeMoreButton()
+            }
+            .padding(.horizontal)
 
             if let loadError, movies.isEmpty, !isLoading {
                 sectionErrorView(message: loadError, onRetry: onRetry)
@@ -24,24 +33,30 @@ struct NowShowingSection: View {
                             } label: {
                                 VStack(alignment: .leading, spacing: 8) {
                                     PosterCard(
-                                        imageURL: movie.coverImage?.extraLarge ?? movie.coverImage?.large
+                                        imageURL: movie.coverImage?.large ?? movie.coverImage?.extraLarge
                                     )
 
                                     Text(movie.displayTitle)
-                                        .font(.merriweather(.subheadline, weight: .semibold))
-                                        .foregroundStyle(.primary)
+                                        .font(.mulishFixed(size: Self.movieTitleSize, weight: .bold))
+                                        .foregroundStyle(Color.black)
+                                        .tracking(Self.movieTitleSize * 0.02)
+                                        .lineSpacing(0)
                                         .lineLimit(2)
                                         .multilineTextAlignment(.leading)
-                                        .frame(width: 150, alignment: .leading)
+                                        .frame(width: Self.movieTitleWidth, alignment: .topLeading)
+                                        .fixedSize(horizontal: false, vertical: true)
 
-                                    RatingBadge(score: movie.scoreOutOfTen)
+                                    if !movie.scoreOutOfTen.isEmpty {
+                                        RatingBadge(score: movie.scoreOutOfTen)
+                                    }
                                 }
                             }
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, 16)
                 }
+                .padding(.top, 16)
             }
         }
     }
@@ -53,7 +68,7 @@ struct NowShowingSection: View {
                     VStack(alignment: .leading, spacing: 8) {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.gray.opacity(0.2))
-                            .frame(width: 150, height: 220)
+                            .frame(width: 143, height: 212)
                             .overlay {
                                 ProgressView()
                             }
@@ -77,7 +92,7 @@ struct NowShowingSection: View {
         VStack(spacing: 12) {
             Text(message)
                 .font(.merriweather(.subheadline))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             Button("Retry", action: onRetry)
@@ -89,32 +104,32 @@ struct NowShowingSection: View {
     }
 }
 
-struct SectionHeader: View {
-    let title: String
-    var action: (() -> Void)? = nil
+#Preview("Loaded") {
+    NowShowingSection(
+        movies: Media.mockList,
+        isLoading: false,
+        loadError: nil,
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
+}
 
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.merriweather(.title3, weight: .bold))
-                .foregroundStyle(Color.accentColor)
+#Preview("Loading") {
+    NowShowingSection(
+        movies: [],
+        isLoading: true,
+        loadError: nil,
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
+}
 
-            Spacer()
-
-            if action != nil {
-                Button("See more") {
-                    action?()
-                }
-                .font(.merriweather(.caption))
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-                .overlay(
-                    Capsule()
-                        .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
-                )
-            }
-        }
-        .padding(.horizontal)
-    }
+#Preview("Error") {
+    NowShowingSection(
+        movies: [],
+        isLoading: false,
+        loadError: "Could not load movies.",
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
 }

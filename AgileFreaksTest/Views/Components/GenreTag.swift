@@ -22,4 +22,5 @@ struct GenreTag: View {
         GenreTag(title: "Fantasy")
         GenreTag(title: "Horror")
     }
+    .padding()
 }

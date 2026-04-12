@@ -5,7 +5,7 @@ struct PosterCard: View {
     let width: CGFloat
     let height: CGFloat
 
-    init(imageURL: String?, width: CGFloat = 150, height: CGFloat = 220) {
+    init(imageURL: String?, width: CGFloat = 143, height: CGFloat = 212) {
         self.imageURL = imageURL
         self.width = width
         self.height = height
@@ -39,11 +39,11 @@ struct PosterCard: View {
             }
         }
         .frame(width: width, height: height)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 
     private var placeholder: some View {
-        RoundedRectangle(cornerRadius: 12)
+        RoundedRectangle(cornerRadius: 5)
             .fill(Color.gray.opacity(0.2))
             .overlay {
                 Image(systemName: "film")
@@ -53,6 +53,10 @@ struct PosterCard: View {
     }
 }
 
-#Preview {
+#Preview("Placeholder") {
     PosterCard(imageURL: nil)
+}
+
+#Preview("Remote image") {
+    PosterCard(imageURL: "https://picsum.photos/seed/poster/300/440")
 }

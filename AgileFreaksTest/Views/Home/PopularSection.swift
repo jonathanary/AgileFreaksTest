@@ -9,7 +9,12 @@ struct PopularSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(title: "Popular")
+            HStack(alignment: .center) {
+                SectionHeader(title: "Popular")
+                Spacer(minLength: 8)
+                SectionSeeMoreButton()
+            }
+            .padding(.horizontal)
 
             if let loadError, movies.isEmpty, !isLoading {
                 sectionErrorView(message: loadError, onRetry: onRetry)
@@ -28,6 +33,8 @@ struct PopularSection: View {
                 }
                 .padding(.horizontal)
             }
+
+            Spacer()
         }
     }
 
@@ -69,7 +76,7 @@ struct PopularSection: View {
         VStack(spacing: 12) {
             Text(message)
                 .font(.merriweather(.subheadline))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             Button("Retry", action: onRetry)
@@ -83,18 +90,19 @@ struct PopularSection: View {
 
 private struct PopularMovieRow: View {
     let movie: Media
+    private static let fontSize: CGFloat = 14
 
     var body: some View {
         HStack(spacing: 14) {
             PosterCard(
                 imageURL: movie.coverImage?.large ?? movie.coverImage?.medium,
-                width: 100,
-                height: 140
+                width: 85,
+                height: 120
             )
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.displayTitle)
-                    .font(.merriweather(.headline, weight: .bold))
+                    .font(.mulishFixed(size: Self.fontSize, weight: .bold))
                     .foregroundStyle(.primary)
                     .lineLimit(2)
 
@@ -112,10 +120,10 @@ private struct PopularMovieRow: View {
                     HStack(spacing: 4) {
                         Image(systemName: "clock")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryLabel)
                         Text(movie.formattedDuration)
                             .font(.merriweather(.caption))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryLabel)
                     }
                 }
             }
@@ -166,4 +174,39 @@ struct FlowLayout: Layout {
 
         return (positions, CGSize(width: maxX, height: currentY + lineHeight))
     }
+}
+
+#Preview("Loaded") {
+    PopularSection(
+        movies: Media.mockList,
+        isLoading: false,
+        loadError: nil,
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
+}
+
+#Preview("Loading") {
+    PopularSection(
+        movies: [],
+        isLoading: true,
+        loadError: nil,
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
+}
+
+#Preview("Error") {
+    PopularSection(
+        movies: [],
+        isLoading: false,
+        loadError: "Could not load popular titles.",
+        onRetry: {},
+        onMovieTap: { _ in }
+    )
+}
+
+#Preview("Popular row") {
+    PopularMovieRow(movie: Media.mockList[0])
+        .padding()
 }

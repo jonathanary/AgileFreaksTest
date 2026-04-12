@@ -8,6 +8,7 @@ extension Font {
         case medium
         case semibold
         case bold
+        case black
 
         var postScriptName: String {
             switch self {
@@ -15,6 +16,7 @@ extension Font {
             case .medium: "Merriweather36pt-Medium"
             case .semibold: "Merriweather36pt-SemiBold"
             case .bold: "Merriweather36pt-Bold"
+            case .black: "Merriweather36pt-Black"
             }
         }
     }
@@ -24,6 +26,28 @@ extension Font {
         let traits = UITraitCollection(preferredContentSizeCategory: .large)
         let ui = UIFont.preferredFont(forTextStyle: uiStyle, compatibleWith: traits)
         return Font.custom(weight.postScriptName, size: ui.pointSize, relativeTo: style)
+    }
+
+    /// Fixed optical size (matches design px/pt specs; not scaled to Dynamic Type).
+    static func merriweatherFixed(size: CGFloat, weight: MerriweatherWeight) -> Font {
+        Font.custom(weight.postScriptName, size: size)
+    }
+
+    /// Bundled Mulish static faces (`Mulish-*.ttf`); register in `Info.plist` (`UIAppFonts`).
+    enum MulishWeight {
+        case regular
+        case bold
+
+        var postScriptName: String {
+            switch self {
+            case .regular: "Mulish-Regular"
+            case .bold: "Mulish-Bold"
+            }
+        }
+    }
+
+    static func mulishFixed(size: CGFloat, weight: MulishWeight = .regular) -> Font {
+        Font.custom(weight.postScriptName, size: size)
     }
 }
 

@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct CastSection: View {
@@ -7,6 +8,7 @@ struct CastSection: View {
         if let edges = characters?.edges, !edges.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 SectionHeader(title: "Cast")
+                    .padding(.horizontal)
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 16) {
@@ -74,4 +76,20 @@ private struct CastCard: View {
                     .foregroundStyle(.gray)
             }
     }
+}
+
+#Preview("Section") {
+    CastSection(
+        characters: Media.mockDetail.characters
+    )
+}
+
+#Preview("Cast card") {
+    CastCard(
+        character: try! JSONDecoder().decode(
+            Character.self,
+            from: Data(#"{"id":1,"name":{"full":"Preview Hero"},"image":{"large":"https://picsum.photos/seed/cc/160/160"}}"#.utf8)
+        ),
+        voiceActor: nil
+    )
 }

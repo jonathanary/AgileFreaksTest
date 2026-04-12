@@ -2,9 +2,23 @@ import SwiftUI
 
 struct DetailView: View {
     let mediaId: Int
-    @State private var viewModel = DetailViewModel()
+    private var loadOnAppear: Bool
+    @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
     @Environment(\.openURL) private var openURL
+
+    init(mediaId: Int) {
+        self.mediaId = mediaId
+        loadOnAppear = true
+        _viewModel = State(initialValue: DetailViewModel())
+    }
+
+    /// Previews with `Media.mockDetail` without refetching.
+    init(previewViewModel: DetailViewModel) {
+        mediaId = previewViewModel.media?.id ?? 1
+        loadOnAppear = false
+        _viewModel = State(initialValue: previewViewModel)
+    }
 
     var body: some View {
         Group {
@@ -16,10 +30,10 @@ struct DetailView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.largeTitle)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondaryLabel)
                     Text(error)
                         .font(.merriweather(.subheadline))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondaryLabel)
                     Button("Retry") {
                         Task { await viewModel.loadDetail(id: mediaId) }
                     }
@@ -55,7 +69,9 @@ struct DetailView: View {
             }
         }
         .task {
-            await viewModel.loadDetail(id: mediaId)
+            if loadOnAppear {
+                await viewModel.loadDetail(id: mediaId)
+            }
         }
     }
 
@@ -179,13 +195,11 @@ struct DetailView: View {
 
     private func descriptionSection(for media: Media) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Description")
-                .font(.merriweather(.title3, weight: .bold))
-                .foregroundStyle(Color.accentColor)
+            SectionHeader(title: "Description")
 
             Text(media.cleanDescription)
                 .font(.merriweather(.subheadline))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
                 .lineSpacing(4)
         }
     }
@@ -199,9 +213,32 @@ private struct InfoColumn: View {
         VStack(spacing: 4) {
             Text(title)
                 .font(.merriweather(.caption))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
             Text(value)
                 .font(.merriweather(.subheadline, weight: .medium))
         }
     }
+}
+
+#Preview("Loading") {
+    NavigationStack {
+        DetailView(mediaId: 1)
+    }
+    .environment(Router())
+}
+
+#Preview("Loaded") {
+    NavigationStack {
+        DetailView(previewViewModel: .previewLoaded())
+    }
+    .environment(Router())
+}
+
+#Preview("Info columns") {
+    HStack {
+        InfoColumn(title: "Length", value: "2h 5m")
+        InfoColumn(title: "Language", value: "Japanese")
+        InfoColumn(title: "Rating", value: "Movie")
+    }
+    .padding()
 }

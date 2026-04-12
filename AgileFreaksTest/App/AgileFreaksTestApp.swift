@@ -29,7 +29,7 @@ struct AgileFreaksTestApp: App {
                 NavigationStack {
                     Text("Search")
                         .font(.merriweather(.title, weight: .bold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondaryLabel)
                         .navigationTitle("Search")
                 }
                 .tabItem {
@@ -39,7 +39,7 @@ struct AgileFreaksTestApp: App {
                 NavigationStack {
                     Text("Saved")
                         .font(.merriweather(.title, weight: .bold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondaryLabel)
                         .navigationTitle("Saved")
                 }
                 .tabItem {

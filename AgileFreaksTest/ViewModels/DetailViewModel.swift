@@ -30,4 +30,13 @@ final class DetailViewModel {
 
         isLoading = false
     }
+
+    /// Populated for SwiftUI previews (no network).
+    static func previewLoaded() -> DetailViewModel {
+        let vm = DetailViewModel()
+        vm.media = Media.mockDetail
+        vm.isLoading = false
+        vm.errorMessage = nil
+        return vm
+    }
 }

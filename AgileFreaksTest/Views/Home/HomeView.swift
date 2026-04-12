@@ -79,16 +79,17 @@ struct HomeView: View {
                 await viewModel.loadMovies()
             }
         }
+        
     }
 
     private func errorView(message: String) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
                 .font(.largeTitle)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
             Text(message)
                 .font(.merriweather(.subheadline))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryLabel)
                 .multilineTextAlignment(.center)
             Button("Retry") {
                 Task {
@@ -100,4 +101,26 @@ struct HomeView: View {
         .padding()
         .frame(maxWidth: .infinity, minHeight: 300)
     }
+}
+
+private struct HomeViewPreviewContainer: View {
+    @State private var router = Router()
+
+    var body: some View {
+        NavigationStack(path: $router.path) {
+            HomeView()
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .detail(let mediaId):
+                        DetailView(mediaId: mediaId)
+                    }
+                }
+        }
+        .environment(router)
+        .environment(\.font, Font.merriweather(.body))
+    }
+}
+
+#Preview {
+    HomeViewPreviewContainer()
 }

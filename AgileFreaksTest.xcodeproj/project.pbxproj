@@ -27,6 +27,9 @@
 		4B0000120000000000FB0012 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A0000120000000000FA0012 /* Preview Assets.xcassets */; };
 		4B0000140000000000FB0014 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000140000000000FA0014 /* Logger.swift */; };
 		4B0000150000000000FB0015 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000150000000000FA0015 /* AppFonts.swift */; };
+		4B0000160000000000FB0016 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000160000000000FA0016 /* AppColors.swift */; };
+		4B0000170000000000FB0017 /* Media+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000170000000000FA0017 /* Media+Mock.swift */; };
+		4B0000180000000000FB0018 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000180000000000FA0018 /* SectionHeader.swift */; };
 		E94B2D072F8925540059DB18 /* MediaTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D062F8925540059DB18 /* MediaTitle.swift */; };
 		E94B2D092F8925850059DB18 /* CoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D082F8925850059DB18 /* CoverImage.swift */; };
 		E94B2D0B2F8925AA0059DB18 /* MediaTrailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D0A2F8925AA0059DB18 /* MediaTrailer.swift */; };
@@ -112,7 +115,6 @@
 		E9EF8E352F8AD50E00E84DE3 /* Merriweather_48pt_SemiCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DA12F8AD50E00E84DE3 /* Merriweather_48pt_SemiCondensed-LightItalic.ttf */; };
 		E9EF8E362F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DDD2F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBold.ttf */; };
 		E9EF8E372F8AD50E00E84DE3 /* Merriweather_36pt-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D8E2F8AD50E00E84DE3 /* Merriweather_36pt-BoldItalic.ttf */; };
-		E9EF8E382F8AD50E00E84DE3 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DF02F8AD50E00E84DE3 /* OFL.txt */; };
 		E9EF8E392F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DDE2F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBoldItalic.ttf */; };
 		E9EF8E3A2F8AD50E00E84DE3 /* Merriweather_96pt_SemiCondensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DB92F8AD50E00E84DE3 /* Merriweather_96pt_SemiCondensed-ExtraBold.ttf */; };
 		E9EF8E3B2F8AD50E00E84DE3 /* Merriweather_36pt_SemiCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D882F8AD50E00E84DE3 /* Merriweather_36pt_SemiCondensed-Regular.ttf */; };
@@ -165,7 +167,6 @@
 		E9EF8E6A2F8AD50E00E84DE3 /* Merriweather_24pt-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D7A2F8AD50E00E84DE3 /* Merriweather_24pt-Regular.ttf */; };
 		E9EF8E6B2F8AD50E00E84DE3 /* Merriweather_120pt-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DE52F8AD50E00E84DE3 /* Merriweather_120pt-Italic.ttf */; };
 		E9EF8E6C2F8AD50E00E84DE3 /* Merriweather_48pt-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DB42F8AD50E00E84DE3 /* Merriweather_48pt-SemiBoldItalic.ttf */; };
-		E9EF8E6D2F8AD50E00E84DE3 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DF12F8AD50E00E84DE3 /* README.txt */; };
 		E9EF8E6E2F8AD50E00E84DE3 /* Merriweather_120pt-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DE22F8AD50E00E84DE3 /* Merriweather_120pt-BoldItalic.ttf */; };
 		E9EF8E6F2F8AD50E00E84DE3 /* Merriweather_48pt-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DB22F8AD50E00E84DE3 /* Merriweather_48pt-Regular.ttf */; };
 		E9EF8E702F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DD22F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-BlackItalic.ttf */; };
@@ -187,6 +188,24 @@
 		E9EF8E802F8AD50E00E84DE3 /* Merriweather_24pt_SemiCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D682F8AD50E00E84DE3 /* Merriweather_24pt_SemiCondensed-Light.ttf */; };
 		E9EF8E812F8AD50E00E84DE3 /* Merriweather_24pt_SemiCondensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D622F8AD50E00E84DE3 /* Merriweather_24pt_SemiCondensed-BlackItalic.ttf */; };
 		E9EF8E822F8AD50E00E84DE3 /* Merriweather_96pt-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8DCC2F8AD50E00E84DE3 /* Merriweather_96pt-Medium.ttf */; };
+		E9EF8E9A2F8C18DC00E84DE3 /* Mulish-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E862F8C18DC00E84DE3 /* Mulish-Bold.ttf */; };
+		E9EF8E9C2F8C18DC00E84DE3 /* Mulish-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E932F8C18DC00E84DE3 /* Mulish-SemiBoldItalic.ttf */; };
+		E9EF8E9E2F8C18DC00E84DE3 /* Mulish-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8D2F8C18DC00E84DE3 /* Mulish-Light.ttf */; };
+		E9EF8E9F2F8C18DC00E84DE3 /* Mulish-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E842F8C18DC00E84DE3 /* Mulish-Black.ttf */; };
+		E9EF8EA02F8C18DC00E84DE3 /* Mulish-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E892F8C18DC00E84DE3 /* Mulish-ExtraBoldItalic.ttf */; };
+		E9EF8EA12F8C18DC00E84DE3 /* Mulish-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E852F8C18DC00E84DE3 /* Mulish-BlackItalic.ttf */; };
+		E9EF8EA22F8C18DC00E84DE3 /* Mulish-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E922F8C18DC00E84DE3 /* Mulish-SemiBold.ttf */; };
+		E9EF8EA32F8C18DC00E84DE3 /* Mulish-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8B2F8C18DC00E84DE3 /* Mulish-ExtraLightItalic.ttf */; };
+		E9EF8EA42F8C18DC00E84DE3 /* Mulish-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8F2F8C18DC00E84DE3 /* Mulish-Medium.ttf */; };
+		E9EF8EA52F8C18DC00E84DE3 /* Mulish-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8C2F8C18DC00E84DE3 /* Mulish-Italic.ttf */; };
+		E9EF8EA62F8C18DC00E84DE3 /* Mulish-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8A2F8C18DC00E84DE3 /* Mulish-ExtraLight.ttf */; };
+		E9EF8EA72F8C18DC00E84DE3 /* Mulish-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E8E2F8C18DC00E84DE3 /* Mulish-LightItalic.ttf */; };
+		E9EF8EA82F8C18DC00E84DE3 /* Mulish-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E902F8C18DC00E84DE3 /* Mulish-MediumItalic.ttf */; };
+		E9EF8EA92F8C18DC00E84DE3 /* Mulish-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E952F8C18DC00E84DE3 /* Mulish-Italic-VariableFont_wght.ttf */; };
+		E9EF8EAA2F8C18DC00E84DE3 /* Mulish-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E962F8C18DC00E84DE3 /* Mulish-VariableFont_wght.ttf */; };
+		E9EF8EAB2F8C18DC00E84DE3 /* Mulish-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E872F8C18DC00E84DE3 /* Mulish-BoldItalic.ttf */; };
+		E9EF8EAC2F8C18DC00E84DE3 /* Mulish-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E912F8C18DC00E84DE3 /* Mulish-Regular.ttf */; };
+		E9EF8EAD2F8C18DC00E84DE3 /* Mulish-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8E882F8C18DC00E84DE3 /* Mulish-ExtraBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -211,6 +230,9 @@
 		4A0000130000000000FA0013 /* AgileFreaksTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileFreaksTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A0000140000000000FA0014 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4A0000150000000000FA0015 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
+		4A0000160000000000FA0016 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		4A0000170000000000FA0017 /* Media+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+Mock.swift"; sourceTree = "<group>"; };
+		4A0000180000000000FA0018 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		E94B2D062F8925540059DB18 /* MediaTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTitle.swift; sourceTree = "<group>"; };
 		E94B2D082F8925850059DB18 /* CoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverImage.swift; sourceTree = "<group>"; };
 		E94B2D0A2F8925AA0059DB18 /* MediaTrailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTrailer.swift; sourceTree = "<group>"; };
@@ -371,6 +393,26 @@
 		E9EF8DEF2F8AD50E00E84DE3 /* Merriweather-VariableFont_opsz,wdth,wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-VariableFont_opsz,wdth,wght.ttf"; sourceTree = "<group>"; };
 		E9EF8DF02F8AD50E00E84DE3 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		E9EF8DF12F8AD50E00E84DE3 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		E9EF8E842F8C18DC00E84DE3 /* Mulish-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Black.ttf"; sourceTree = "<group>"; };
+		E9EF8E852F8C18DC00E84DE3 /* Mulish-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-BlackItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E862F8C18DC00E84DE3 /* Mulish-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Bold.ttf"; sourceTree = "<group>"; };
+		E9EF8E872F8C18DC00E84DE3 /* Mulish-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-BoldItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E882F8C18DC00E84DE3 /* Mulish-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-ExtraBold.ttf"; sourceTree = "<group>"; };
+		E9EF8E892F8C18DC00E84DE3 /* Mulish-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E8A2F8C18DC00E84DE3 /* Mulish-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-ExtraLight.ttf"; sourceTree = "<group>"; };
+		E9EF8E8B2F8C18DC00E84DE3 /* Mulish-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E8C2F8C18DC00E84DE3 /* Mulish-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Italic.ttf"; sourceTree = "<group>"; };
+		E9EF8E8D2F8C18DC00E84DE3 /* Mulish-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Light.ttf"; sourceTree = "<group>"; };
+		E9EF8E8E2F8C18DC00E84DE3 /* Mulish-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-LightItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E8F2F8C18DC00E84DE3 /* Mulish-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Medium.ttf"; sourceTree = "<group>"; };
+		E9EF8E902F8C18DC00E84DE3 /* Mulish-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-MediumItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E912F8C18DC00E84DE3 /* Mulish-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Regular.ttf"; sourceTree = "<group>"; };
+		E9EF8E922F8C18DC00E84DE3 /* Mulish-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-SemiBold.ttf"; sourceTree = "<group>"; };
+		E9EF8E932F8C18DC00E84DE3 /* Mulish-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		E9EF8E952F8C18DC00E84DE3 /* Mulish-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		E9EF8E962F8C18DC00E84DE3 /* Mulish-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mulish-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		E9EF8E972F8C18DC00E84DE3 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		E9EF8E982F8C18DC00E84DE3 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +441,7 @@
 				4A000000000000000EFA000E /* GenreTag.swift */,
 				4A000000000000000FFA000F /* RatingBadge.swift */,
 				4A0000100000000000FA0010 /* PosterCard.swift */,
+				4A0000180000000000FA0018 /* SectionHeader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -406,7 +449,7 @@
 		4C000000000000000CFC000C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E9EF8DF22F8AD50E00E84DE3 /* Merriweather */,
+				E9EF8E832F8C18D000E84DE3 /* Fonts */,
 				4A0000110000000000FA0011 /* Assets.xcassets */,
 				4C000000000000000DFC000D /* Preview Content */,
 			);
@@ -463,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				4A0000010000000000FA0001 /* AgileFreaksTestApp.swift */,
+				4A0000160000000000FA0016 /* AppColors.swift */,
 				4A0000150000000000FA0015 /* AppFonts.swift */,
 				4A0000140000000000FA0014 /* Logger.swift */,
 			);
@@ -533,6 +577,7 @@
 			children = (
 				E94B2D1C2F8926AA0059DB18 /* MediaData.swift */,
 				4A0000030000000000FA0003 /* Media.swift */,
+				4A0000170000000000FA0017 /* Media+Mock.swift */,
 				E94B2D1A2F8926580059DB18 /* StaffImage.swift */,
 				E94B2D182F89264A0059DB18 /* StaffName.swift */,
 				E94B2D162F8926360059DB18 /* Staff.swift */,
@@ -707,6 +752,50 @@
 			path = Merriweather;
 			sourceTree = "<group>";
 		};
+		E9EF8E832F8C18D000E84DE3 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E9EF8E992F8C18DC00E84DE3 /* Mulish */,
+				E9EF8DF22F8AD50E00E84DE3 /* Merriweather */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E9EF8E942F8C18DC00E84DE3 /* static */ = {
+			isa = PBXGroup;
+			children = (
+				E9EF8E842F8C18DC00E84DE3 /* Mulish-Black.ttf */,
+				E9EF8E852F8C18DC00E84DE3 /* Mulish-BlackItalic.ttf */,
+				E9EF8E862F8C18DC00E84DE3 /* Mulish-Bold.ttf */,
+				E9EF8E872F8C18DC00E84DE3 /* Mulish-BoldItalic.ttf */,
+				E9EF8E882F8C18DC00E84DE3 /* Mulish-ExtraBold.ttf */,
+				E9EF8E892F8C18DC00E84DE3 /* Mulish-ExtraBoldItalic.ttf */,
+				E9EF8E8A2F8C18DC00E84DE3 /* Mulish-ExtraLight.ttf */,
+				E9EF8E8B2F8C18DC00E84DE3 /* Mulish-ExtraLightItalic.ttf */,
+				E9EF8E8C2F8C18DC00E84DE3 /* Mulish-Italic.ttf */,
+				E9EF8E8D2F8C18DC00E84DE3 /* Mulish-Light.ttf */,
+				E9EF8E8E2F8C18DC00E84DE3 /* Mulish-LightItalic.ttf */,
+				E9EF8E8F2F8C18DC00E84DE3 /* Mulish-Medium.ttf */,
+				E9EF8E902F8C18DC00E84DE3 /* Mulish-MediumItalic.ttf */,
+				E9EF8E912F8C18DC00E84DE3 /* Mulish-Regular.ttf */,
+				E9EF8E922F8C18DC00E84DE3 /* Mulish-SemiBold.ttf */,
+				E9EF8E932F8C18DC00E84DE3 /* Mulish-SemiBoldItalic.ttf */,
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		E9EF8E992F8C18DC00E84DE3 /* Mulish */ = {
+			isa = PBXGroup;
+			children = (
+				E9EF8E942F8C18DC00E84DE3 /* static */,
+				E9EF8E952F8C18DC00E84DE3 /* Mulish-Italic-VariableFont_wght.ttf */,
+				E9EF8E962F8C18DC00E84DE3 /* Mulish-VariableFont_wght.ttf */,
+				E9EF8E972F8C18DC00E84DE3 /* OFL.txt */,
+				E9EF8E982F8C18DC00E84DE3 /* README.txt */,
+			);
+			path = Mulish;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -835,7 +924,6 @@
 				E9EF8E352F8AD50E00E84DE3 /* Merriweather_48pt_SemiCondensed-LightItalic.ttf in Resources */,
 				E9EF8E362F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBold.ttf in Resources */,
 				E9EF8E372F8AD50E00E84DE3 /* Merriweather_36pt-BoldItalic.ttf in Resources */,
-				E9EF8E382F8AD50E00E84DE3 /* OFL.txt in Resources */,
 				E9EF8E392F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-SemiBoldItalic.ttf in Resources */,
 				E9EF8E3A2F8AD50E00E84DE3 /* Merriweather_96pt_SemiCondensed-ExtraBold.ttf in Resources */,
 				E9EF8E3B2F8AD50E00E84DE3 /* Merriweather_36pt_SemiCondensed-Regular.ttf in Resources */,
@@ -882,13 +970,30 @@
 				E9EF8E642F8AD50E00E84DE3 /* Merriweather_36pt-BlackItalic.ttf in Resources */,
 				E9EF8E652F8AD50E00E84DE3 /* Merriweather_24pt-SemiBold.ttf in Resources */,
 				E9EF8E662F8AD50E00E84DE3 /* Merriweather_120pt-Regular.ttf in Resources */,
+				E9EF8E9A2F8C18DC00E84DE3 /* Mulish-Bold.ttf in Resources */,
+				E9EF8E9C2F8C18DC00E84DE3 /* Mulish-SemiBoldItalic.ttf in Resources */,
+				E9EF8E9E2F8C18DC00E84DE3 /* Mulish-Light.ttf in Resources */,
+				E9EF8E9F2F8C18DC00E84DE3 /* Mulish-Black.ttf in Resources */,
+				E9EF8EA02F8C18DC00E84DE3 /* Mulish-ExtraBoldItalic.ttf in Resources */,
+				E9EF8EA12F8C18DC00E84DE3 /* Mulish-BlackItalic.ttf in Resources */,
+				E9EF8EA22F8C18DC00E84DE3 /* Mulish-SemiBold.ttf in Resources */,
+				E9EF8EA32F8C18DC00E84DE3 /* Mulish-ExtraLightItalic.ttf in Resources */,
+				E9EF8EA42F8C18DC00E84DE3 /* Mulish-Medium.ttf in Resources */,
+				E9EF8EA52F8C18DC00E84DE3 /* Mulish-Italic.ttf in Resources */,
+				E9EF8EA62F8C18DC00E84DE3 /* Mulish-ExtraLight.ttf in Resources */,
+				E9EF8EA72F8C18DC00E84DE3 /* Mulish-LightItalic.ttf in Resources */,
+				E9EF8EA82F8C18DC00E84DE3 /* Mulish-MediumItalic.ttf in Resources */,
+				E9EF8EA92F8C18DC00E84DE3 /* Mulish-Italic-VariableFont_wght.ttf in Resources */,
+				E9EF8EAA2F8C18DC00E84DE3 /* Mulish-VariableFont_wght.ttf in Resources */,
+				E9EF8EAB2F8C18DC00E84DE3 /* Mulish-BoldItalic.ttf in Resources */,
+				E9EF8EAC2F8C18DC00E84DE3 /* Mulish-Regular.ttf in Resources */,
+				E9EF8EAD2F8C18DC00E84DE3 /* Mulish-ExtraBold.ttf in Resources */,
 				E9EF8E672F8AD50E00E84DE3 /* Merriweather_48pt-ExtraBoldItalic.ttf in Resources */,
 				E9EF8E682F8AD50E00E84DE3 /* Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf in Resources */,
 				E9EF8E692F8AD50E00E84DE3 /* Merriweather_48pt-BlackItalic.ttf in Resources */,
 				E9EF8E6A2F8AD50E00E84DE3 /* Merriweather_24pt-Regular.ttf in Resources */,
 				E9EF8E6B2F8AD50E00E84DE3 /* Merriweather_120pt-Italic.ttf in Resources */,
 				E9EF8E6C2F8AD50E00E84DE3 /* Merriweather_48pt-SemiBoldItalic.ttf in Resources */,
-				E9EF8E6D2F8AD50E00E84DE3 /* README.txt in Resources */,
 				E9EF8E6E2F8AD50E00E84DE3 /* Merriweather_120pt-BoldItalic.ttf in Resources */,
 				E9EF8E6F2F8AD50E00E84DE3 /* Merriweather_48pt-Regular.ttf in Resources */,
 				E9EF8E702F8AD50E00E84DE3 /* Merriweather_120pt_SemiCondensed-BlackItalic.ttf in Resources */,
@@ -948,6 +1053,9 @@
 				4B0000090000000000FB0009 /* HomeView.swift in Sources */,
 				4B0000140000000000FB0014 /* Logger.swift in Sources */,
 				4B0000150000000000FB0015 /* AppFonts.swift in Sources */,
+				4B0000160000000000FB0016 /* AppColors.swift in Sources */,
+				4B0000170000000000FB0017 /* Media+Mock.swift in Sources */,
+				4B0000180000000000FB0018 /* SectionHeader.swift in Sources */,
 				4B000000000000000AFB000A /* NowShowingSection.swift in Sources */,
 				4B000000000000000BFB000B /* PopularSection.swift in Sources */,
 				4B000000000000000CFB000C /* DetailView.swift in Sources */,

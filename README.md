@@ -6,7 +6,7 @@ A SwiftUI iOS 17+ movie browser app built for the Agile Freaks coding challenge.
 
 | Home Screen | Detail Screen |
 |:-----------:|:-------------:|
-| Now Showing (trending) + Popular (top-rated) | Banner, trailer, genres, cast |
+| <img width="206" height="622" alt="image" src="https://github.com/user-attachments/assets/87d753db-9194-4de3-bf94-232f2a6a0c5d" />| <img width="206" height="622" alt="image" src="https://github.com/user-attachments/assets/0fbf7c79-3df4-437c-b2f6-e9a1b38620cd" />
 
 ## Requirements
 

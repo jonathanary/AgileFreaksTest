@@ -168,7 +168,7 @@ struct DetailView: View {
                 Spacer()
 
                 Button {} label: {
-                    Image("tab3")
+                    Image("bookmark")
                         .font(.body)
                         .foregroundStyle(Color.black)
                 }

@@ -5,21 +5,10 @@ struct HomeView: View {
     @State private var didMarkHomeAppearance = false
     @Environment(Router.self) private var router
 
-    private var loadsAreComplete: Bool {
-        !viewModel.isLoadingNowShowing && !viewModel.isLoadingPopular
-    }
-
-    private var shouldShowFullScreenError: Bool {
-        loadsAreComplete
-            && viewModel.nowShowingMovies.isEmpty
-            && viewModel.popularMovies.isEmpty
-            && viewModel.errorMessage != nil
-    }
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: .zero) {
-                if shouldShowFullScreenError, let message = viewModel.errorMessage {
+                if viewModel.shouldShowFullScreenError, let message = viewModel.errorMessage {
                     errorView(message: message)
                 } else {
                     NowShowingSection(
@@ -29,11 +18,9 @@ struct HomeView: View {
                         loadError: viewModel.nowShowingError,
                         onRetry: { Task { await viewModel.loadMovies() } },
                         onLoadMore: { Task { await viewModel.loadMoreNowShowing() } },
-                        onMovieTap: { mediaId in
-                            router.navigate(to: .detail(mediaId: mediaId))
-                        }
+                        onMovieTap: { router.navigate(to: .detail(mediaId: $0)) }
                     )
-                    .padding(.top, 16)
+                    .padding(.top, Design.Spacing.lg)
 
                     PopularSection(
                         movies: viewModel.popularMovies,
@@ -42,11 +29,9 @@ struct HomeView: View {
                         loadError: viewModel.popularError,
                         onRetry: { Task { await viewModel.loadMovies() } },
                         onLoadMore: { Task { await viewModel.loadMorePopular() } },
-                        onMovieTap: { mediaId in
-                            router.navigate(to: .detail(mediaId: mediaId))
-                        }
+                        onMovieTap: { router.navigate(to: .detail(mediaId: $0)) }
                     )
-                    .padding(.top, 24)
+                    .padding(.top, Design.Spacing.xxl)
                 }
             }
         }
@@ -56,18 +41,18 @@ struct HomeView: View {
                 Image("LaunchLogo")
             }
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                } label: {
+                Button {} label: {
                     Image("menu")
                         .foregroundStyle(Color.accentColor)
                 }
+                .accessibilityLabel("Menu")
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                } label: {
+                Button {} label: {
                     Image("notif")
                         .foregroundStyle(Color.accentColor)
                 }
+                .accessibilityLabel("Notifications")
             }
         }
         .onAppear {
@@ -84,7 +69,7 @@ struct HomeView: View {
     }
 
     private func errorView(message: String) -> some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Design.Spacing.lg) {
             Image(systemName: "exclamationmark.triangle")
                 .font(.largeTitle)
                 .foregroundStyle(Color.secondaryLabel)
@@ -93,9 +78,7 @@ struct HomeView: View {
                 .foregroundStyle(Color.secondaryLabel)
                 .multilineTextAlignment(.center)
             Button("Retry") {
-                Task {
-                    await viewModel.loadMovies()
-                }
+                Task { await viewModel.loadMovies() }
             }
             .buttonStyle(.borderedProminent)
         }

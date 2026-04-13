@@ -1,34 +1,35 @@
 import SwiftUI
 
-/// Section title (Merriweather 900, 16pt, `Color.standardSectionTitle`).
-struct SectionHeader: View {
+struct SectionHeaderRow: View {
     let title: String
-
-    private static let titleSize: CGFloat = 21
+    var showSeeMore: Bool = true
 
     var body: some View {
-        Text(title)
-            .font(.merriweatherFixed(size: Self.titleSize, weight: .black))
-            .foregroundStyle(Color.standardSectionTitle)
-            .tracking(Self.titleSize * 0.02)
-            .lineSpacing(0)
+        HStack(alignment: .center) {
+            Text(title)
+                .font(.merriweatherFixed(size: Design.FontSize.sectionTitle, weight: .black))
+                .foregroundStyle(Color.standardSectionTitle)
+                .tracking(Design.FontSize.sectionTitle * Design.letterSpacingRatio)
+                .lineSpacing(0)
+
+            Spacer(minLength: Design.Spacing.sm)
+
+            if showSeeMore {
+                seeMoreButton
+            }
+        }
     }
-}
 
-/// Decorative “See more” capsule (no action). Mulish 400, 10pt, 2% tracking, `Color.secondaryLabel`.
-struct SectionSeeMoreButton: View {
-    private static let fontSize: CGFloat = 10
-
-    var body: some View {
-        Button (action: {}) {
+    private var seeMoreButton: some View {
+        Button {} label: {
             Text("See more")
-                .font(.mulishFixed(size: Self.fontSize, weight: .regular))
+                .font(.mulishFixed(size: Design.FontSize.seeMore, weight: .regular))
                 .foregroundStyle(Color.secondaryLabel)
-                .tracking(Self.fontSize * 0.02)
+                .tracking(Design.FontSize.seeMore * Design.letterSpacingRatio)
                 .lineSpacing(0)
                 .multilineTextAlignment(.trailing)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 5)
+                .padding(.horizontal, Design.Spacing.md)
+                .padding(.vertical, Design.Spacing.xxs + 1)
                 .overlay(
                     Capsule()
                         .stroke(Color.secondaryLabel.opacity(0.45), lineWidth: 1)
@@ -39,10 +40,11 @@ struct SectionSeeMoreButton: View {
 }
 
 #Preview("Row") {
-    HStack(alignment: .center) {
-        SectionHeader(title: "Now Showing")
-        Spacer(minLength: 8)
-        SectionSeeMoreButton()
-    }
-    .padding(.horizontal)
+    SectionHeaderRow(title: "Now Showing")
+        .padding(.horizontal)
+}
+
+#Preview("No see more") {
+    SectionHeaderRow(title: "Cast", showSeeMore: false)
+        .padding(.horizontal)
 }

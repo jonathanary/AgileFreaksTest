@@ -1,7 +1,6 @@
 import Foundation
 
 enum NetworkError: LocalizedError {
-    case invalidURL
     case invalidResponse
     case graphQLErrors([GraphQLError])
     case decodingError(Error)
@@ -9,8 +8,6 @@ enum NetworkError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidURL:
-            return "Invalid URL"
         case .invalidResponse:
             return "Invalid server response"
         case .graphQLErrors(let errors):

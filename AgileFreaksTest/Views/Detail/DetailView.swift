@@ -2,10 +2,6 @@ import SwiftUI
 
 struct DetailView: View {
     let mediaId: Int
-    private static let playTrailerFontSize: CGFloat = 12
-    private static let titleFontSize: CGFloat = 20
-    private static let descriptionFontSize: CGFloat = 16
-    private static let descriptionBodyFontSize: CGFloat = 12
     private var loadOnAppear: Bool
     @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
@@ -17,9 +13,8 @@ struct DetailView: View {
         _viewModel = State(initialValue: DetailViewModel())
     }
 
-    /// Previews with `Media.mockDetail` without refetching.
     init(previewViewModel: DetailViewModel) {
-        mediaId = previewViewModel.media?.id ?? 1
+        mediaId = previewViewModel.movie?.id ?? 1
         loadOnAppear = false
         _viewModel = State(initialValue: previewViewModel)
     }
@@ -31,185 +26,177 @@ struct DetailView: View {
                     .font(.merriweather(.body))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let error = viewModel.errorMessage {
-                VStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle)
-                        .foregroundStyle(Color.secondaryLabel)
-                    Text(error)
-                        .font(.merriweather(.subheadline))
-                        .foregroundStyle(Color.secondaryLabel)
-                    Button("Retry") {
-                        Task { await viewModel.loadDetail(id: mediaId) }
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let media = viewModel.media {
-                content(for: media)
+                fullScreenError(error)
+            } else if let movie = viewModel.movie {
+                content(for: movie)
             }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    router.pop()
-                } label: {
+                Button { router.pop() } label: {
                     Image(systemName: "arrow.left")
                         .foregroundStyle(.white)
                         .fontWeight(.semibold)
-                        .padding(8)
-                        .background(Circle().fill(.black.opacity(0.3)))
+                        .padding(Design.Spacing.sm)
+                        .background(Circle().fill(Color.overlayDark))
                 }
+                .accessibilityLabel("Back")
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                } label: {
+                Button {} label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(.white)
                         .fontWeight(.semibold)
-                        .padding(8)
-                        .background(Circle().fill(.black.opacity(0.3)))
+                        .padding(Design.Spacing.sm)
+                        .background(Circle().fill(Color.overlayDark))
                 }
+                .accessibilityLabel("More options")
             }
         }
         .task {
-            if loadOnAppear {
-                await viewModel.loadDetail(id: mediaId)
-            }
+            if loadOnAppear { await viewModel.loadDetail(id: mediaId) }
         }
     }
 
-    private func content(for media: Media) -> some View {
+    // MARK: - Subviews
+
+    private func fullScreenError(_ message: String) -> some View {
+        VStack(spacing: Design.Spacing.lg) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.largeTitle)
+                .foregroundStyle(Color.secondaryLabel)
+            Text(message)
+                .font(.merriweather(.subheadline))
+                .foregroundStyle(Color.secondaryLabel)
+            Button("Retry") {
+                Task { await viewModel.loadDetail(id: mediaId) }
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func content(for movie: Movie) -> some View {
         ScrollView {
             VStack(spacing: .zero) {
-                heroBanner(for: media)
+                heroBanner(for: movie)
 
-                VStack(alignment: .leading, spacing: 20) {
-                    movieInfo(for: media)
+                VStack(alignment: .leading, spacing: Design.Spacing.xl) {
+                    movieInfo(for: movie)
 
-                    if !media.cleanDescription.isEmpty {
-                        descriptionSection(for: media)
+                    if !movie.description.isEmpty {
+                        descriptionSection(for: movie)
                     }
 
-                    CastSection(characters: media.characters)
+                    CastSection(cast: movie.cast)
                 }
                 .padding(.horizontal)
-                .padding(.top, 24)
-                .padding(.bottom, 20)
+                .padding(.top, Design.Spacing.xxl)
+                .padding(.bottom, Design.Spacing.xl)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(.systemBackground))
                 .clipShape(
                     UnevenRoundedRectangle(
-                        topLeadingRadius: 24,
-                        topTrailingRadius: 24
+                        topLeadingRadius: Design.CornerRadius.large,
+                        topTrailingRadius: Design.CornerRadius.large
                     )
                 )
-                .offset(y: -24)
+                .offset(y: -Design.Spacing.xxl)
             }
         }
         .ignoresSafeArea(edges: .top)
         .background(Color(.systemBackground))
     }
 
-    private func heroBanner(for media: Media) -> some View {
+    private func heroBanner(for movie: Movie) -> some View {
         ZStack {
-            let bannerURL = media.bannerImage ?? media.coverImage?.extraLarge
-            AsyncImage(url: URL(string: bannerURL ?? "")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                case .failure, .empty:
-                    Rectangle()
-                        .fill(.gray.opacity(0.3))
-                @unknown default:
-                    Rectangle()
-                        .fill(.gray.opacity(0.3))
-                }
-            }
+            RemoteImage(
+                url: (movie.bannerImageURL ?? movie.coverImageURL).flatMap { URL(string: $0) },
+                placeholder: AnyView(Rectangle().fill(Color.bannerPlaceholder))
+            )
             .containerRelativeFrame(.horizontal)
-            .frame(height: 300)
+            .frame(height: Design.Banner.height)
             .clipped()
             .overlay {
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.4)],
+                    colors: [.clear, Color.overlayGradient],
                     startPoint: .top,
                     endPoint: .bottom
                 )
             }
 
-            if let trailerURL = media.trailer?.url {
+            if let trailerURL = movie.trailerURL {
                 Button {
                     openURL(trailerURL)
                 } label: {
-                    VStack(spacing: 4) {
+                    VStack(spacing: Design.Spacing.xxs) {
                         Image("playButton")
                             .font(.system(size: 45))
                             .foregroundStyle(.white)
 
                         Text("Play Trailer")
-                            .font(.mulishFixed(size: Self.playTrailerFontSize, weight: .bold))
-                            .foregroundStyle(Color.white)
-                            .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
+                            .font(.mulishFixed(size: Design.FontSize.caption, weight: .bold))
+                            .foregroundStyle(.white)
+                            .designShadow(Design.Shadows.playTrailer)
                     }
                 }
+                .accessibilityLabel("Play trailer")
             }
         }
         .frame(maxWidth: .infinity)
     }
 
-    private func movieInfo(for media: Media) -> some View {
+    private func movieInfo(for movie: Movie) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             HStack(alignment: .top) {
-                Text(media.displayTitle)
-                    .font(.mulishFixed(size: Self.titleFontSize, weight: .bold))
-
+                Text(movie.displayTitle)
+                    .font(.mulishFixed(size: Design.FontSize.movieTitle, weight: .bold))
                 Spacer()
-
                 Button {} label: {
                     Image("bookmark")
                         .font(.body)
                         .foregroundStyle(Color.black)
                 }
+                .accessibilityLabel("Bookmark")
             }
-            .padding(.bottom, 8)
+            .padding(.bottom, Design.Spacing.sm)
 
-            RatingBadge(score: media.scoreOutOfTen)
-                .padding(.bottom, 16)
+            RatingBadge(score: movie.score)
+                .padding(.bottom, Design.Spacing.lg)
 
-            if let genres = media.genres, !genres.isEmpty {
+            if !movie.genres.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(genres, id: \.self) { genre in
+                    HStack(spacing: Design.Spacing.sm) {
+                        ForEach(movie.genres, id: \.self) { genre in
                             GenreTag(title: genre)
                         }
                     }
                 }
-                .padding(.bottom, 16)
+                .padding(.bottom, Design.Spacing.lg)
             }
 
             HStack(alignment: .top, spacing: 0) {
-                InfoColumn(title: "Length", value: media.formattedDuration)
-                InfoColumn(title: "Language", value: media.languageFromCountry)
-                InfoColumn(title: "Rating", value: media.format ?? "N/A")
+                InfoColumn(title: "Length", value: movie.duration)
+                InfoColumn(title: "Language", value: movie.language)
+                InfoColumn(title: "Rating", value: movie.format)
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, Design.Spacing.xxs)
         }
     }
 
-    private func descriptionSection(for media: Media) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+    private func descriptionSection(for movie: Movie) -> some View {
+        VStack(alignment: .leading, spacing: Design.Spacing.sm) {
             Text("Description")
-                .font(.merriweatherFixed(size: Self.descriptionFontSize, weight: .black))
+                .font(.merriweatherFixed(size: Design.FontSize.sectionDescription, weight: .black))
                 .foregroundStyle(Color.standardSectionTitle)
-                .tracking(Self.descriptionFontSize * 0.02)
+                .tracking(Design.FontSize.sectionDescription * Design.letterSpacingRatio)
                 .lineSpacing(0)
 
-            Text(media.cleanDescription)
-                .font(.mulishFixed(size: Self.descriptionBodyFontSize, weight: .semibold))
+            Text(movie.description)
+                .font(.mulishFixed(size: Design.FontSize.caption, weight: .semibold))
                 .foregroundStyle(Color.tertiaryLabel)
-                .tracking(Self.descriptionFontSize * 0.02)
+                .tracking(Design.FontSize.sectionDescription * Design.letterSpacingRatio)
                 .lineSpacing(0)
         }
     }
@@ -218,31 +205,29 @@ struct DetailView: View {
 private struct InfoColumn: View {
     let title: String
     let value: String
-    private static let titleFontSize: CGFloat = 12
-    private static let valueFontSize: CGFloat = 12
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: Design.Spacing.xxs) {
             Text(title)
-                .font(.mulishFixed(size: Self.titleFontSize, weight: .regular))
+                .font(.mulishFixed(size: Design.FontSize.caption, weight: .regular))
                 .foregroundStyle(Color.secondaryLabel)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(value)
-                .font(.mulishFixed(size: Self.valueFontSize, weight: .semibold))
+                .font(.mulishFixed(size: Design.FontSize.caption, weight: .semibold))
                 .foregroundStyle(Color.black)
-                .tracking(Self.valueFontSize * 0.02)
+                .tracking(Design.FontSize.caption * Design.letterSpacingRatio)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(minWidth: 109, maxWidth: .infinity, alignment: .leading)
+        .frame(minWidth: Design.InfoColumn.minWidth, maxWidth: .infinity, alignment: .leading)
     }
 }
 
 #Preview("Loaded") {
     NavigationStack {
-        DetailView(mediaId: 1)
+        DetailView(previewViewModel: .previewLoaded())
     }
     .environment(Router())
 }

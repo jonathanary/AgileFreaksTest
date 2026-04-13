@@ -1,66 +1,52 @@
 import Foundation
 
-private struct PaginationState {
-    var currentPage = 0
-    var hasNextPage = true
-    var isLoadingMore = false
-}
-
-/// Loads home feed from AniList. All state updates happen on the main actor for safe SwiftUI observation.
 @MainActor
 @Observable
 final class HomeViewModel {
-    private(set) var nowShowingMovies: [Media] = []
-    private(set) var popularMovies: [Media] = []
+    private(set) var nowShowingMovies: [Movie] = []
+    private(set) var popularMovies: [Movie] = []
 
-    /// Per-section loading so the first completed request can render without waiting for the other.
     private(set) var isLoadingNowShowing = true
     private(set) var isLoadingPopular = true
 
-    /// Per-section errors (e.g. one request succeeds while the other fails).
     private(set) var nowShowingError: String?
     private(set) var popularError: String?
-
-    /// Set when both sections fail so the home screen can offer a single retry affordance.
     private(set) var errorMessage: String?
-
-    private var nowShowingPagination = PaginationState()
-    private var popularPagination = PaginationState()
 
     var isLoadingMoreNowShowing: Bool { nowShowingPagination.isLoadingMore }
     var isLoadingMorePopular: Bool { popularPagination.isLoadingMore }
 
-    private let client = GraphQLClient.shared
-
-    init() {
-        isLoadingNowShowing = true
-        isLoadingPopular = true
+    var loadsAreComplete: Bool {
+        !isLoadingNowShowing && !isLoadingPopular
     }
+
+    var shouldShowFullScreenError: Bool {
+        loadsAreComplete
+            && nowShowingMovies.isEmpty
+            && popularMovies.isEmpty
+            && errorMessage != nil
+    }
+
+    private var nowShowingPagination = PaginationState()
+    private var popularPagination = PaginationState()
+    private let repository: MediaRepositoryProtocol
+
+    init(repository: MediaRepositoryProtocol = MediaRepository()) {
+        self.repository = repository
+    }
+
+    // MARK: - Public
 
     func loadMovies() async {
         Log.debug("HomeViewModel.loadMovies started", category: .home)
-        errorMessage = nil
-        nowShowingError = nil
-        popularError = nil
-        isLoadingNowShowing = true
-        isLoadingPopular = true
-        nowShowingPagination = PaginationState()
-        popularPagination = PaginationState()
+        resetState()
 
         await withTaskGroup(of: Void.self) { group in
-            group.addTask { await self.loadNowShowingSection() }
-            group.addTask { await self.loadPopularSection() }
+            group.addTask { await self.loadSection(.nowShowing, page: 1) }
+            group.addTask { await self.loadSection(.popular, page: 1) }
         }
 
-        if nowShowingMovies.isEmpty, popularMovies.isEmpty {
-            if let e1 = nowShowingError, let e2 = popularError, e1 != e2 {
-                errorMessage = "\(e1)\n\(e2)"
-            } else {
-                errorMessage = nowShowingError ?? popularError
-            }
-        } else {
-            errorMessage = nil
-        }
+        resolveGlobalError()
 
         Log.debug(
             "HomeViewModel.loadMovies finished (nowShowing: \(nowShowingMovies.count), popular: \(popularMovies.count))",
@@ -69,75 +55,109 @@ final class HomeViewModel {
     }
 
     func loadMoreNowShowing() async {
-        guard !nowShowingPagination.isLoadingMore, nowShowingPagination.hasNextPage else { return }
-        nowShowingPagination.isLoadingMore = true
-        let nextPage = nowShowingPagination.currentPage + 1
-        let result = await fetchMovies(query: GraphQLQueries.nowShowingMovies, page: nextPage)
-        if result.error == nil {
-            appendUniqueMedia(&nowShowingMovies, result.movies)
-            applyPageInfo(&nowShowingPagination, result.pageInfo, requestedPage: nextPage)
-        }
-        nowShowingPagination.isLoadingMore = false
-        Log.debug(
-            "Now Showing load more page \(nextPage) (\(result.movies.count) items, hasNext: \(nowShowingPagination.hasNextPage))",
-            category: .home
-        )
+        await loadMore(section: .nowShowing)
     }
 
     func loadMorePopular() async {
-        guard !popularPagination.isLoadingMore, popularPagination.hasNextPage else { return }
-        popularPagination.isLoadingMore = true
-        let nextPage = popularPagination.currentPage + 1
-        let result = await fetchMovies(query: GraphQLQueries.popularMovies, page: nextPage)
-        if result.error == nil {
-            appendUniqueMedia(&popularMovies, result.movies)
-            applyPageInfo(&popularPagination, result.pageInfo, requestedPage: nextPage)
-        }
-        popularPagination.isLoadingMore = false
-        Log.debug(
-            "Popular load more page \(nextPage) (\(result.movies.count) items, hasNext: \(popularPagination.hasNextPage))",
-            category: .home
-        )
+        await loadMore(section: .popular)
     }
 
-    private func loadNowShowingSection() async {
-        let result = await fetchMovies(query: GraphQLQueries.nowShowingMovies, page: 1)
-        nowShowingMovies = result.movies
-        isLoadingNowShowing = false
-        nowShowingError = result.error
-        if result.error == nil {
-            applyPageInfo(&nowShowingPagination, result.pageInfo, requestedPage: 1)
-        } else {
-            nowShowingPagination.hasNextPage = false
-        }
-        let status = result.error == nil ? "success" : "failed"
-        Log.debug("Now Showing load \(status) (\(result.movies.count) items)", category: .home)
+    // MARK: - Generic section loader
+
+    private enum Section {
+        case nowShowing, popular
     }
 
-    private func loadPopularSection() async {
-        let result = await fetchMovies(query: GraphQLQueries.popularMovies, page: 1)
-        popularMovies = result.movies
-        isLoadingPopular = false
-        popularError = result.error
-        if result.error == nil {
-            applyPageInfo(&popularPagination, result.pageInfo, requestedPage: 1)
-        } else {
-            popularPagination.hasNextPage = false
-        }
-        let status = result.error == nil ? "success" : "failed"
-        Log.debug("Popular load \(status) (\(result.movies.count) items)", category: .home)
-    }
-
-    private func fetchMovies(query: String, page: Int) async -> (movies: [Media], pageInfo: PageInfo?, error: String?) {
+    private func loadSection(_ section: Section, page: Int) async {
         do {
-            let variables: [String: Any] = ["page": page, "perPage": 10]
-            let data: PageData = try await client.execute(
-                query: query,
-                variables: variables
-            )
-            return (data.Page.media ?? [], data.Page.pageInfo, nil)
+            let result: (movies: [Movie], pageInfo: PageInfo?)
+            switch section {
+            case .nowShowing:
+                result = try await repository.fetchTrending(page: page, perPage: Design.Network.perPage)
+                nowShowingMovies = result.movies
+                isLoadingNowShowing = false
+                nowShowingError = nil
+                applyPageInfo(&nowShowingPagination, result.pageInfo, requestedPage: page)
+            case .popular:
+                result = try await repository.fetchPopular(page: page, perPage: Design.Network.perPage)
+                popularMovies = result.movies
+                isLoadingPopular = false
+                popularError = nil
+                applyPageInfo(&popularPagination, result.pageInfo, requestedPage: page)
+            }
         } catch {
-            return ([], nil, error.localizedDescription)
+            let message = error.localizedDescription
+            switch section {
+            case .nowShowing:
+                isLoadingNowShowing = false
+                nowShowingError = message
+                nowShowingPagination.hasNextPage = false
+            case .popular:
+                isLoadingPopular = false
+                popularError = message
+                popularPagination.hasNextPage = false
+            }
+        }
+    }
+
+    private func loadMore(section: Section) async {
+        let pagination: PaginationState
+        switch section {
+        case .nowShowing: pagination = nowShowingPagination
+        case .popular: pagination = popularPagination
+        }
+        guard !pagination.isLoadingMore, pagination.hasNextPage else { return }
+
+        setPaginationLoading(section, true)
+        let nextPage = pagination.currentPage + 1
+
+        do {
+            let result: (movies: [Movie], pageInfo: PageInfo?)
+            switch section {
+            case .nowShowing:
+                result = try await repository.fetchTrending(page: nextPage, perPage: Design.Network.perPage)
+                appendUnique(&nowShowingMovies, result.movies)
+                applyPageInfo(&nowShowingPagination, result.pageInfo, requestedPage: nextPage)
+            case .popular:
+                result = try await repository.fetchPopular(page: nextPage, perPage: Design.Network.perPage)
+                appendUnique(&popularMovies, result.movies)
+                applyPageInfo(&popularPagination, result.pageInfo, requestedPage: nextPage)
+            }
+        } catch {
+            Log.error("Load more \(section) page \(nextPage) failed: \(error)", category: .home)
+        }
+
+        setPaginationLoading(section, false)
+    }
+
+    // MARK: - Helpers
+
+    private func resetState() {
+        errorMessage = nil
+        nowShowingError = nil
+        popularError = nil
+        isLoadingNowShowing = true
+        isLoadingPopular = true
+        nowShowingPagination = PaginationState()
+        popularPagination = PaginationState()
+    }
+
+    private func resolveGlobalError() {
+        guard nowShowingMovies.isEmpty, popularMovies.isEmpty else {
+            errorMessage = nil
+            return
+        }
+        if let e1 = nowShowingError, let e2 = popularError, e1 != e2 {
+            errorMessage = "\(e1)\n\(e2)"
+        } else {
+            errorMessage = nowShowingError ?? popularError
+        }
+    }
+
+    private func setPaginationLoading(_ section: Section, _ value: Bool) {
+        switch section {
+        case .nowShowing: nowShowingPagination.isLoadingMore = value
+        case .popular: popularPagination.isLoadingMore = value
         }
     }
 
@@ -151,9 +171,14 @@ final class HomeViewModel {
         }
     }
 
-    private func appendUniqueMedia(_ array: inout [Media], _ newItems: [Media]) {
+    private func appendUnique(_ array: inout [Movie], _ newItems: [Movie]) {
         let existing = Set(array.map(\.id))
-        let unique = newItems.filter { !existing.contains($0.id) }
-        array.append(contentsOf: unique)
+        array.append(contentsOf: newItems.filter { !existing.contains($0.id) })
     }
+}
+
+private struct PaginationState {
+    var currentPage = 0
+    var hasNextPage = true
+    var isLoadingMore = false
 }

@@ -5,47 +5,29 @@ struct PosterCard: View {
     let width: CGFloat
     let height: CGFloat
 
-    init(imageURL: String?, width: CGFloat = 143, height: CGFloat = 212) {
+    init(
+        imageURL: String?,
+        width: CGFloat = Design.PosterSize.nowShowingWidth,
+        height: CGFloat = Design.PosterSize.nowShowingHeight
+    ) {
         self.imageURL = imageURL
         self.width = width
         self.height = height
     }
 
-    private var resolvedURL: URL? {
-        imageURL.flatMap { URL(string: $0) }
-    }
-
     var body: some View {
-        Group {
-            if let url = resolvedURL {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    case .failure:
-                        placeholder
-                    case .empty:
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.gray.opacity(0.1))
-                    @unknown default:
-                        placeholder
-                    }
-                }
-            } else {
-                placeholder
-            }
-        }
+        RemoteImage(
+            url: imageURL.flatMap { URL(string: $0) },
+            placeholder: AnyView(posterPlaceholder)
+        )
         .frame(width: width, height: height)
-        .clipShape(RoundedRectangle(cornerRadius: 5))
-        .shadow(color: .black.opacity(0.18), radius: 8, x: 0, y: 4)
+        .clipShape(RoundedRectangle(cornerRadius: Design.CornerRadius.small))
+        .designShadow(Design.Shadows.posterCard)
     }
 
-    private var placeholder: some View {
-        RoundedRectangle(cornerRadius: 5)
-            .fill(Color.gray.opacity(0.2))
+    private var posterPlaceholder: some View {
+        RoundedRectangle(cornerRadius: Design.CornerRadius.small)
+            .fill(Color.skeletonFill)
             .overlay {
                 Image(systemName: "film")
                     .font(.title2)

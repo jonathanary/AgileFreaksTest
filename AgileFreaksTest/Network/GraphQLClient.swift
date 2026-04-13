@@ -1,16 +1,20 @@
 import Foundation
 
-actor GraphQLClient {
+actor GraphQLClient: GraphQLClientProtocol {
     static let shared = GraphQLClient()
 
-    private let endpoint = URL(string: "https://graphql.anilist.co")!
+    private let endpoint: URL
     private let session: URLSession
     private let decoder: JSONDecoder
 
-    private init() {
+    init(
+        endpoint: URL = URL(string: Design.Network.baseURL)!,
+        session: URLSession? = nil
+    ) {
+        self.endpoint = endpoint
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 30
-        self.session = URLSession(configuration: config)
+        config.timeoutIntervalForRequest = Design.Network.timeoutInterval
+        self.session = session ?? URLSession(configuration: config)
         self.decoder = JSONDecoder()
     }
 

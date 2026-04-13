@@ -29,7 +29,7 @@ struct SectionHeaderRow: View {
                 .lineSpacing(0)
                 .multilineTextAlignment(.trailing)
                 .padding(.horizontal, Design.Spacing.md)
-                .padding(.vertical, Design.Spacing.xxs + 1)
+                .padding(.vertical, Design.Spacing.xxs)
                 .overlay(
                     Capsule()
                         .stroke(Color.secondaryLabel.opacity(0.45), lineWidth: 1)

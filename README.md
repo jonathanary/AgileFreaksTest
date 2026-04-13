@@ -1,4 +1,4 @@
-# FilmKu - Anime Movie Browser
+# FilmKu — Anime Movie Browser
 
 A SwiftUI iOS 17+ movie browser app built for the Agile Freaks coding challenge. Browse trending and top-rated anime movies powered by the [AniList GraphQL API](https://docs.anilist.co).
 
@@ -25,55 +25,85 @@ A SwiftUI iOS 17+ movie browser app built for the Agile Freaks coding challenge.
 3. Select an iOS 17+ simulator (e.g. iPhone 16 Pro).
 4. Press **Cmd + R** to build and run.
 
-No API keys or additional configuration required -- the AniList GraphQL API is public.
+No API keys or additional configuration required — the AniList GraphQL API is public.
+
+### Running Tests
+
+Press **Cmd + U** in Xcode, or from the terminal:
+
+```bash
+xcodebuild test \
+  -project AgileFreaksTest.xcodeproj \
+  -scheme AgileFreaksTest \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+```
+
+The test suite uses the **Swift Testing** framework (`import Testing`) with 50 tests covering domain logic, repository, view models, networking, and navigation.
 
 ### Linting (optional)
 
-The repo includes a [SwiftLint](https://github.com/realm/SwiftLint) configuration (`.swiftlint.yml` at the project root). Install with Homebrew (`brew install swiftlint`), then from the repository root run `swiftlint lint --strict` before you push (treats warnings as failures). The **AgileFreaksTest** target runs `swiftlint lint` in a build phase using that config (with common Homebrew/Mint paths added so GUI Xcode finds the binary). The project has **User Script Sandboxing** disabled so SwiftLint can read your sources (Xcode’s default sandbox blocks that). The script does not fail the build on lint output—run `swiftlint lint --strict` locally or in CI to enforce rules. If SwiftLint is missing, Xcode prints a warning and continues the build.
+Install [SwiftLint](https://github.com/realm/SwiftLint) via Homebrew (`brew install swiftlint`) and run from the repo root:
+
+```bash
+swiftlint lint
+```
+
+A SwiftLint build phase runs automatically in Xcode (advisory — does not fail the build). User Script Sandboxing is disabled so SwiftLint can read sources.
 
 ## Architecture
 
-**MVVM** with the iOS 17 `@Observable` macro and a **NavigationStack-based Router** for navigation.
+**Clean Architecture** with MVVM presentation layer, the iOS 17 `@Observable` macro, and a **NavigationStack-based Router**.
 
 ```
 AgileFreaksTest/
-  App/                  Entry point, TabView + NavigationStack setup
-  Navigation/           Router class with Route enum for typed navigation
-  Models/               Codable structs for AniList GraphQL responses
-  Network/              GraphQLClient (URLSession) + query definitions
-  ViewModels/           @Observable view models for Home and Detail screens
+  App/                  Entry point, DesignSystem, AppColors, Logger
+  Navigation/           Router + Route enum for typed navigation
+  Domain/               Movie, CastMember (domain models + mocks)
+  Models/               Media DTO, nested Decodable structs (GraphQL response types)
+  Repositories/         MediaRepositoryProtocol, MediaRepository, MediaMapper
+  Network/              GraphQLClientProtocol, GraphQLClient (actor), Queries, NetworkError
+  ViewModels/           HomeViewModel, DetailViewModel (@Observable)
   Views/
     Home/               HomeView, NowShowingSection, PopularSection
     Detail/             DetailView, CastSection
-    Components/         GenreTag, RatingBadge, PosterCard (shared UI)
-  Resources/            Asset catalogs
+    Components/         PosterCard, RatingBadge, GenreTag, SectionHeaderRow,
+                        RemoteImage, SectionErrorView, SkeletonRect, FlowLayout
+
+AgileFreaksTestTests/
+  Domain/               MediaMapperTests, MediaTrailerTests
+  Repositories/         MediaRepositoryTests
+  ViewModels/           HomeViewModelTests, DetailViewModelTests
+  Network/              NetworkErrorTests
+  Navigation/           RouterTests
+  Mocks/                MockGraphQLClient, MockMediaRepository
 ```
+
+### Layer Diagram
+
+```
+View  →  ViewModel  →  Repository (protocol)  →  GraphQLClient (protocol)
+                              ↓                          ↓
+                        MediaMapper              URLSession + AniList API
+                     (DTO → Domain)
+```
+
+- **Domain layer** (`Movie`, `CastMember`) — pure value types, no framework imports, no optionals where avoidable. Pre-computed display fields (formatted duration, score, language, cleaned description).
+- **Repository layer** (`MediaRepository`) — owns GraphQL query strings, calls `GraphQLClientProtocol`, maps `Media` DTOs to `Movie` domain models via `MediaMapper`.
+- **Network layer** (`GraphQLClient`) — a lightweight `actor` that posts JSON to `https://graphql.anilist.co` and decodes `Codable` responses. Protocol-abstracted for testability.
+- **Presentation layer** — `@Observable` ViewModels injected with repository protocol. Views are stateless consumers of domain types.
+- **Design System** (`DesignSystem.swift`, `AppColors.swift`) — centralized spacing, corner radii, shadows, sizing, typography, and semantic color tokens. Zero magic numbers in views.
 
 ### Key Design Decisions
 
-- **No third-party dependencies**: Pure SwiftUI + URLSession. The GraphQL client is a lightweight actor that posts JSON to `https://graphql.anilist.co` and decodes responses with `Codable`.
-- **`@Observable` over `ObservableObject`**: Leverages the iOS 17 Observation framework for cleaner state management without `@Published` wrappers.
-- **Incremental home loading**: "Now Showing" and "Popular" are fetched in parallel with `withTaskGroup`. Each section updates as soon as its request finishes, so users see the first list without waiting for the second. Per-section loading placeholders avoid a blank first frame.
-- **MainActor view models and router**: `HomeViewModel`, `DetailViewModel`, and `Router` are `@MainActor` so UI state updates stay on the main thread.
-- **`actor` for network I/O**: `GraphQLClient` is an actor, ensuring safe concurrent access from async call sites.
-
-### Data Flow
-
-```
-View (.task) → ViewModel (async) → GraphQLClient (actor) → AniList API
-                    ↓
-              View re-renders via @Observable
-```
-
-### Navigation
-
-Type-safe routing via `NavigationStack(path:)` + `navigationDestination(for: Route.self)`:
-
-```swift
-enum Route: Hashable {
-    case detail(mediaId: Int)
-}
-```
+- **No third-party dependencies**: Pure SwiftUI + URLSession.
+- **Protocol-driven DI**: `GraphQLClientProtocol` and `MediaRepositoryProtocol` allow full mock injection in tests — no singletons in test paths.
+- **DTO ↔ Domain split**: `Media` (Decodable DTO) is never exposed to Views. `MediaMapper` handles all formatting, fallback chains, and HTML stripping. This isolates API changes from the UI.
+- **Generalized pagination**: `HomeViewModel` uses a single generic `loadSection`/`loadMore` pattern instead of duplicated per-section methods.
+- **Shared UI components**: `RemoteImage`, `SectionErrorView`, `SkeletonRect`, `FlowLayout`, and `SectionHeaderRow` eliminate repeated view patterns.
+- **`@Observable` over `ObservableObject`**: Leverages the iOS 17 Observation framework for cleaner state management without `@Published`.
+- **`actor` for network I/O**: `GraphQLClient` is an actor, ensuring safe concurrent access.
+- **Incremental home loading**: "Now Showing" and "Popular" are fetched in parallel with `withTaskGroup`. Each section updates independently.
+- **Swift Testing**: Test suite uses `@Suite`, `@Test`, `#expect`, and parameterized tests instead of XCTest.
 
 ## API
 
@@ -88,6 +118,9 @@ All data comes from the [AniList GraphQL API](https://graphql.anilist.co):
 ## Features
 
 - **Home Screen**: Horizontal scrolling "Now Showing" section + vertical "Popular" list with genre tags and duration
-- **Detail Screen**: Hero banner with trailer button, rating, genres, length/language info, description, and character cast
-- **Error handling**: Full-screen retry when both home sections fail; per-section retry when only one request fails; detail screen retry on load failure
+- **Detail Screen**: Hero banner with trailer button, rating, genres, length/language/format info, description, and character cast
+- **Error handling**: Full-screen retry when both home sections fail; per-section retry when only one fails; detail screen retry on load failure
+- **Skeleton loaders**: Section-specific loading placeholders for both Now Showing and Popular
+- **Accessibility**: VoiceOver labels on all interactive elements, genre tags, rating badges, and cast cards
+- **Design System**: Centralized tokens for spacing, radii, shadows, sizing, typography, and colors
 - **Tab bar**: Home, Search (placeholder), Saved (placeholder)

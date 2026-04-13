@@ -48,17 +48,33 @@ struct PopularSection: View {
     private var popularSkeleton: some View {
         LazyVStack(spacing: Design.Spacing.lg) {
             ForEach(0..<3, id: \.self) { _ in
-                HStack(spacing: 14) {
+                HStack(spacing: Design.Skeleton.skeletonSpacing) {
                     SkeletonRect(
-                        width: 100, height: 140,
+                        width: Design.Skeleton.popularPosterWidth,
+                        height: Design.Skeleton.popularPosterHeight,
                         showSpinner: true
                     )
                     VStack(alignment: .leading, spacing: Design.Spacing.sm) {
-                        SkeletonRect(width: nil, height: 18, cornerRadius: 4, color: .skeletonLight)
-                        SkeletonRect(width: 100, height: 12, cornerRadius: 4, color: .skeletonLight)
+                        SkeletonRect(
+                            width: nil,
+                            height: Design.Skeleton.popularTextHeight,
+                            cornerRadius: Design.Skeleton.textCornerRadius,
+                            color: .skeletonLight
+                        )
+                        SkeletonRect(
+                            width: Design.Skeleton.popularPosterWidth,
+                            height: Design.Skeleton.subtitleHeight,
+                            cornerRadius: Design.Skeleton.textCornerRadius,
+                            color: .skeletonLight
+                        )
                         HStack(spacing: Design.Spacing.xs) {
                             ForEach(0..<2, id: \.self) { _ in
-                                SkeletonRect(width: 56, height: 22, cornerRadius: 10, color: .skeletonLighter)
+                                SkeletonRect(
+                                    width: Design.Skeleton.genreTagWidth,
+                                    height: Design.Skeleton.genreTagHeight,
+                                    cornerRadius: Design.Skeleton.genreTagRadius,
+                                    color: .skeletonLighter
+                                )
                             }
                         }
                     }

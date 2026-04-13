@@ -142,4 +142,74 @@ struct MediaMapperTests {
         #expect(movie.trailerURL?.absoluteString == "https://www.youtube.com/watch?v=abc")
         #expect(movie.cast.isEmpty)
     }
+
+    // MARK: - Cast mapping
+
+    @Test("Maps CharacterConnection to CastMember array")
+    func mapCastWithVoiceActor() {
+        let characters = CharacterConnection(edges: [
+            CharacterEdge(
+                node: Character(
+                    id: 10,
+                    name: CharacterName(full: "Hero", native: nil),
+                    image: CharacterImage(large: "hero.png", medium: nil)
+                ),
+                role: "MAIN",
+                voiceActors: [
+                    Staff(id: 100, name: StaffName(full: "Actor A"), image: nil, languageV2: "Japanese")
+                ]
+            ),
+            CharacterEdge(
+                node: Character(
+                    id: 20,
+                    name: nil,
+                    image: nil
+                ),
+                role: nil,
+                voiceActors: nil
+            ),
+            CharacterEdge(node: nil, role: nil, voiceActors: nil)
+        ])
+
+        let media = Media(
+            id: 99,
+            title: nil, type: nil, format: nil, status: nil,
+            description: nil, duration: nil, episodes: nil,
+            seasonYear: nil, averageScore: nil, meanScore: nil,
+            popularity: nil, genres: nil, source: nil,
+            countryOfOrigin: nil, coverImage: nil, bannerImage: nil,
+            trailer: nil, characters: characters
+        )
+
+        let movie = MediaMapper.map(media)
+
+        #expect(movie.cast.count == 2)
+
+        let hero = movie.cast[0]
+        #expect(hero.id == 10)
+        #expect(hero.name == "Hero")
+        #expect(hero.imageURL == "hero.png")
+        #expect(hero.voiceActorName == "Actor A")
+
+        let unknown = movie.cast[1]
+        #expect(unknown.id == 20)
+        #expect(unknown.name == "Unknown")
+        #expect(unknown.imageURL == nil)
+        #expect(unknown.voiceActorName == nil)
+    }
+
+    @Test("Nil CharacterConnection produces empty cast")
+    func mapCastNilConnection() {
+        let media = Media(
+            id: 1,
+            title: nil, type: nil, format: nil, status: nil,
+            description: nil, duration: nil, episodes: nil,
+            seasonYear: nil, averageScore: nil, meanScore: nil,
+            popularity: nil, genres: nil, source: nil,
+            countryOfOrigin: nil, coverImage: nil, bannerImage: nil,
+            trailer: nil, characters: nil
+        )
+
+        #expect(MediaMapper.map(media).cast.isEmpty)
+    }
 }

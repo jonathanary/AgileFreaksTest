@@ -37,6 +37,7 @@ enum Design {
 
     enum Banner {
         static let height: CGFloat = 300
+        static let playIconSize: CGFloat = 45
     }
 
     // MARK: - Shadow
@@ -71,6 +72,36 @@ enum Design {
 
     enum InfoColumn {
         static let minWidth: CGFloat = 109
+    }
+
+    // MARK: - Skeleton
+
+    enum Skeleton {
+        static let titleWidth: CGFloat = 120
+        static let titleHeight: CGFloat = 14
+        static let subtitleWidth: CGFloat = 80
+        static let subtitleHeight: CGFloat = 12
+        static let textCornerRadius: CGFloat = 4
+        static let popularPosterWidth: CGFloat = 100
+        static let popularPosterHeight: CGFloat = 140
+        static let popularTextHeight: CGFloat = 18
+        static let genreTagWidth: CGFloat = 56
+        static let genreTagHeight: CGFloat = 22
+        static let genreTagRadius: CGFloat = 10
+        static let skeletonSpacing: CGFloat = 14
+        static let loadMoreWidth: CGFloat = 48
+    }
+
+    // MARK: - GenreTag
+
+    enum GenreTagStyle {
+        static let horizontalPadding: CGFloat = 10
+    }
+
+    // MARK: - Error View
+
+    enum ErrorView {
+        static let minHeight: CGFloat = 300
     }
 
     // MARK: - Network

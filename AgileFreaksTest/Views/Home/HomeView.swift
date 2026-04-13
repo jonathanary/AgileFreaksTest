@@ -83,7 +83,7 @@ struct HomeView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding()
-        .frame(maxWidth: .infinity, minHeight: 300)
+        .frame(maxWidth: .infinity, minHeight: Design.ErrorView.minHeight)
     }
 }
 

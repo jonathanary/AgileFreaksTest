@@ -53,7 +53,7 @@ struct NowShowingSection: View {
 
                         if isLoadingMore {
                             ProgressView()
-                                .frame(width: 48, height: Design.PosterSize.nowShowingHeight)
+                                .frame(width: Design.Skeleton.loadMoreWidth, height: Design.PosterSize.nowShowingHeight)
                         }
                     }
                     .padding(.horizontal, Design.Spacing.lg)
@@ -73,8 +73,18 @@ struct NowShowingSection: View {
                             height: Design.PosterSize.nowShowingHeight,
                             showSpinner: true
                         )
-                        SkeletonRect(width: 120, height: 14, cornerRadius: 4, color: .skeletonLight)
-                        SkeletonRect(width: 80, height: 12, cornerRadius: 4, color: .skeletonLight)
+                        SkeletonRect(
+                            width: Design.Skeleton.titleWidth,
+                            height: Design.Skeleton.titleHeight,
+                            cornerRadius: Design.Skeleton.textCornerRadius,
+                            color: .skeletonLight
+                        )
+                        SkeletonRect(
+                            width: Design.Skeleton.subtitleWidth,
+                            height: Design.Skeleton.subtitleHeight,
+                            cornerRadius: Design.Skeleton.textCornerRadius,
+                            color: .skeletonLight
+                        )
                     }
                 }
             }

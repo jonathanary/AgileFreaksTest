@@ -7,7 +7,7 @@ struct GenreTag: View {
         Text(title.uppercased())
             .font(.mulishFixed(size: Design.FontSize.genreTag, weight: .bold))
             .foregroundStyle(Color.genreTagText)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, Design.GenreTagStyle.horizontalPadding)
             .padding(.vertical, Design.Spacing.xxs)
             .background(
                 Capsule()

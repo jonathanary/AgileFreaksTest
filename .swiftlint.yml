@@ -1,9 +1,9 @@
 # SwiftLint — https://github.com/realm/SwiftLint
 # Run from repo root: swiftlint
-# With an explicit path: swiftlint --config "$(pwd)/.swiftlint.yml" --path AgileFreaksTest
 
 included:
   - AgileFreaksTest
+  - AgileFreaksTestTests
 
 excluded:
   - AgileFreaksTest/Resources

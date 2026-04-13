@@ -132,7 +132,7 @@ struct DetailView: View {
                 } label: {
                     VStack(spacing: Design.Spacing.xxs) {
                         Image("playButton")
-                            .font(.system(size: 45))
+                            .font(.system(size: Design.Banner.playIconSize))
                             .foregroundStyle(.white)
 
                         Text("Play Trailer")

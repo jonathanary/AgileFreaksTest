@@ -85,11 +85,7 @@ private struct CastCard: View {
 }
 
 #Preview("Cast card") {
-    CastCard(
-        character: try! JSONDecoder().decode(
-            Character.self,
-            from: Data(#"{"id":1,"name":{"full":"Preview Hero"},"image":{"large":"https://picsum.photos/seed/cc/160/160"}}"#.utf8)
-        ),
-        voiceActor: nil
-    )
+    if let character = Media.mockDetail.characters?.edges?.first?.node {
+        CastCard(character: character, voiceActor: nil)
+    }
 }

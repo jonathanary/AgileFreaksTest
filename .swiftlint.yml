@@ -1,0 +1,34 @@
+# SwiftLint — https://github.com/realm/SwiftLint
+# Run from repo root: swiftlint
+# With an explicit path: swiftlint --config "$(pwd)/.swiftlint.yml" --path AgileFreaksTest
+
+included:
+  - AgileFreaksTest
+
+excluded:
+  - AgileFreaksTest/Resources
+  - AgileFreaksTest/build
+  - "**/DerivedSources"
+
+disabled_rules:
+  - multiple_closures_with_trailing_closure
+  - no_space_in_method_call
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - id
+    - vm
+    - ui
+    - e1
+    - e2
+    - Page
+    - Media
+
+line_length:
+  warning: 140
+  error: 200
+
+large_tuple:
+  warning: 4
+  error: 6

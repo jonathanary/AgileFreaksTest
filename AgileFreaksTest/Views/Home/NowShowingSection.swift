@@ -28,7 +28,7 @@ struct NowShowingSection: View {
                 nowShowingSkeleton
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 16) {
+                    LazyHStack(alignment: .top, spacing: 16) {
                         ForEach(movies) { movie in
                             Button {
                                 onMovieTap(movie.id)
@@ -47,7 +47,6 @@ struct NowShowingSection: View {
                                         .multilineTextAlignment(.leading)
                                         .frame(width: Self.movieTitleWidth, alignment: .topLeading)
                                         .fixedSize(horizontal: false, vertical: true)
-
                                     if !movie.scoreOutOfTen.isEmpty {
                                         RatingBadge(score: movie.scoreOutOfTen)
                                     }
@@ -75,7 +74,7 @@ struct NowShowingSection: View {
 
     private var nowShowingSkeleton: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
+            HStack(alignment: .top, spacing: 16) {
                 ForEach(0..<4, id: \.self) { _ in
                     VStack(alignment: .leading, spacing: 8) {
                         RoundedRectangle(cornerRadius: 12)

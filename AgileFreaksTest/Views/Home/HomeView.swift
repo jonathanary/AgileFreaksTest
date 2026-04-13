@@ -34,7 +34,6 @@ struct HomeView: View {
                         }
                     )
                     .padding(.top, 16)
-                    .border(.red)
 
                     PopularSection(
                         movies: viewModel.popularMovies,
@@ -48,7 +47,6 @@ struct HomeView: View {
                         }
                     )
                     .padding(.top, 24)
-                    .border(.blue)
                 }
             }
         }
@@ -83,7 +81,6 @@ struct HomeView: View {
                 await viewModel.loadMovies()
             }
         }
-        
     }
 
     private func errorView(message: String) -> some View {

@@ -803,6 +803,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F0000060000000000FF0006 /* Build configuration list for PBXNativeTarget "AgileFreaksTest" */;
 			buildPhases = (
+				4E0000040000000000FE0004 /* SwiftLint */,
 				4E0000010000000000FE0001 /* Sources */,
 				4E0000020000000000FE0002 /* Resources */,
 				4E0000030000000000FE0003 /* Frameworks */,
@@ -1021,6 +1022,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4E0000040000000000FE0004 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}\" 2>/dev/null || { echo \"warning: SwiftLint skipped (SRCROOT).\"; exit 0; }\n# GUI Xcode omits Homebrew/Mint from PATH; sandboxing (if enabled) blocks SwiftLint from reading sources.\nexport PATH=\"${PATH}:/opt/homebrew/bin:/usr/local/bin:${HOME}/.mint/bin:${HOME}/.local/bin\"\nCONFIG=\"${SRCROOT}/.swiftlint.yml\"\nif [ ! -f \"${CONFIG}\" ]; then echo \"warning: SwiftLint skipped (no .swiftlint.yml).\"; exit 0; fi\nif ! command -v swiftlint >/dev/null 2>&1; then echo \"warning: SwiftLint not installed; skipping.\"; exit 0; fi\nswiftlint lint --config \"${CONFIG}\" --quiet || true\nexit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4E0000010000000000FE0001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1106,7 +1129,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1169,7 +1192,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

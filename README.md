@@ -27,6 +27,10 @@ A SwiftUI iOS 17+ movie browser app built for the Agile Freaks coding challenge.
 
 No API keys or additional configuration required -- the AniList GraphQL API is public.
 
+### Linting (optional)
+
+The repo includes a [SwiftLint](https://github.com/realm/SwiftLint) configuration (`.swiftlint.yml` at the project root). Install with Homebrew (`brew install swiftlint`), then from the repository root run `swiftlint lint --strict` before you push (treats warnings as failures). The **AgileFreaksTest** target runs `swiftlint lint` in a build phase using that config (with common Homebrew/Mint paths added so GUI Xcode finds the binary). The project has **User Script Sandboxing** disabled so SwiftLint can read your sources (Xcode’s default sandbox blocks that). The script does not fail the build on lint output—run `swiftlint lint --strict` locally or in CI to enforce rules. If SwiftLint is missing, Xcode prints a warning and continues the build.
+
 ## Architecture
 
 **MVVM** with the iOS 17 `@Observable` macro and a **NavigationStack-based Router** for navigation.

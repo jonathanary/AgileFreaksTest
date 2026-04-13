@@ -7,7 +7,7 @@ extension Media {
         [
           {
             "id": 101,
-            "title": { "english": "Spirited Away" },
+            "title": { "english": "Spirited long mock title away now again Away" },
             "averageScore": 96,
             "duration": 125,
             "genres": ["Adventure", "Fantasy"],
@@ -74,11 +74,17 @@ extension Media {
 
     private static func decodeMockValue(_ json: String) -> Media {
         let data = Data(json.utf8)
-        return try! JSONDecoder().decode(Media.self, from: data)
+        guard let value = try? JSONDecoder().decode(Media.self, from: data) else {
+            preconditionFailure("Invalid embedded mock JSON for Media")
+        }
+        return value
     }
 
     private static func decodeMockList(_ json: String) -> [Media] {
         let data = Data(json.utf8)
-        return try! JSONDecoder().decode([Media].self, from: data)
+        guard let list = try? JSONDecoder().decode([Media].self, from: data) else {
+            preconditionFailure("Invalid embedded mock JSON for [Media]")
+        }
+        return list
     }
 }

@@ -3,22 +3,31 @@ import SwiftUI
 
 struct CastSection: View {
     let characters: CharacterConnection?
+    private static let titleSize: CGFloat = 16
 
     var body: some View {
         if let edges = characters?.edges, !edges.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
-                SectionHeader(title: "Cast")
-                    .padding(.horizontal)
+                HStack(alignment: .center) {
+                    Text("Cast")
+                        .font(.merriweatherFixed(size: Self.titleSize, weight: .bold))
+                        .foregroundStyle(Color.standardSectionTitle)
+                        .tracking(Self.titleSize * 0.02)
+                        .lineSpacing(0)
+
+                    Spacer(minLength: 8)
+
+                    SectionSeeMoreButton()
+                }
 
                 ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 16) {
+                    LazyHStack(alignment: .top, spacing: 16) {
                         ForEach(edges, id: \.node?.id) { edge in
                             if let character = edge.node {
                                 CastCard(character: character, voiceActor: edge.voiceActors?.first)
                             }
                         }
                     }
-                    .padding(.horizontal)
                 }
             }
         }
@@ -28,13 +37,14 @@ struct CastSection: View {
 private struct CastCard: View {
     let character: Character
     let voiceActor: Staff?
+    private static let nameTextSize: CGFloat = 12
 
     private var imageURL: URL? {
         (character.image?.large ?? character.image?.medium).flatMap { URL(string: $0) }
     }
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(alignment: .leading, spacing: 6) {
             Group {
                 if let url = imageURL {
                     AsyncImage(url: url) { phase in
@@ -57,16 +67,17 @@ private struct CastCard: View {
                     placeholder
                 }
             }
-            .frame(width: 80, height: 80)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .frame(width: 72, height: 72)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
 
             Text(character.name?.full ?? "Unknown")
-                .font(.merriweather(.caption, weight: .medium))
-                .foregroundStyle(.primary)
+                .font(.mulishFixed(size: Self.nameTextSize, weight: .regular))
+                .foregroundStyle(Color.standardSectionTitle)
                 .lineLimit(2)
-                .multilineTextAlignment(.center)
-                .frame(width: 80)
+                .multilineTextAlignment(.leading)
+                .frame(width: 80, alignment: .topLeading)
         }
+        .frame(width: 80, alignment: .topLeading)
     }
 
     private var placeholder: some View {

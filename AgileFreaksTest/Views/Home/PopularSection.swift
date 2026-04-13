@@ -106,11 +106,11 @@ private struct PopularMovieRow: View {
     private static let fontSize: CGFloat = 14
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(alignment: .top, spacing: 16) {
             PosterCard(
                 imageURL: movie.coverImage?.large ?? movie.coverImage?.medium,
                 width: 85,
-                height: 120
+                height: 128
             )
 
             VStack(alignment: .leading, spacing: 8) {

@@ -8,8 +8,6 @@ final class DetailViewModel {
     private(set) var isLoading = true
     private(set) var errorMessage: String?
 
-    var isBookmarked = false
-
     private let client = GraphQLClient.shared
 
     func loadDetail(id: Int) async {

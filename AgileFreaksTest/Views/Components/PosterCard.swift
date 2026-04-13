@@ -40,6 +40,7 @@ struct PosterCard: View {
         }
         .frame(width: width, height: height)
         .clipShape(RoundedRectangle(cornerRadius: 5))
+        .shadow(color: .black.opacity(0.18), radius: 8, x: 0, y: 4)
     }
 
     private var placeholder: some View {

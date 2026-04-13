@@ -2,6 +2,10 @@ import SwiftUI
 
 struct DetailView: View {
     let mediaId: Int
+    private static let playTrailerFontSize: CGFloat = 12
+    private static let titleFontSize: CGFloat = 20
+    private static let descriptionFontSize: CGFloat = 16
+    private static let descriptionBodyFontSize: CGFloat = 12
     private var loadOnAppear: Bool
     @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
@@ -140,12 +144,14 @@ struct DetailView: View {
                     openURL(trailerURL)
                 } label: {
                     VStack(spacing: 4) {
-                        Image(systemName: "play.circle.fill")
-                            .font(.system(size: 48))
+                        Image("playButton")
+                            .font(.system(size: 45))
                             .foregroundStyle(.white)
+
                         Text("Play Trailer")
-                            .font(.merriweather(.caption, weight: .medium))
-                            .foregroundStyle(.white)
+                            .font(.mulishFixed(size: Self.playTrailerFontSize, weight: .bold))
+                            .foregroundStyle(Color.white)
+                            .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
                     }
                 }
             }
@@ -154,23 +160,23 @@ struct DetailView: View {
     }
 
     private func movieInfo(for media: Media) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: .zero) {
             HStack(alignment: .top) {
                 Text(media.displayTitle)
-                    .font(.merriweather(.title2, weight: .bold))
+                    .font(.mulishFixed(size: Self.titleFontSize, weight: .bold))
 
                 Spacer()
 
-                Button {
-                    viewModel.isBookmarked.toggle()
-                } label: {
-                    Image(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                Button {} label: {
+                    Image("tab3")
+                        .font(.body)
+                        .foregroundStyle(Color.black)
                 }
             }
+            .padding(.bottom, 8)
 
             RatingBadge(score: media.scoreOutOfTen)
+                .padding(.bottom, 16)
 
             if let genres = media.genres, !genres.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -180,13 +186,12 @@ struct DetailView: View {
                         }
                     }
                 }
+                .padding(.bottom, 16)
             }
 
-            HStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 0) {
                 InfoColumn(title: "Length", value: media.formattedDuration)
-                Spacer()
                 InfoColumn(title: "Language", value: media.languageFromCountry)
-                Spacer()
                 InfoColumn(title: "Rating", value: media.format ?? "N/A")
             }
             .padding(.vertical, 4)
@@ -195,12 +200,17 @@ struct DetailView: View {
 
     private func descriptionSection(for media: Media) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            SectionHeader(title: "Description")
+            Text("Description")
+                .font(.merriweatherFixed(size: Self.descriptionFontSize, weight: .black))
+                .foregroundStyle(Color.standardSectionTitle)
+                .tracking(Self.descriptionFontSize * 0.02)
+                .lineSpacing(0)
 
             Text(media.cleanDescription)
-                .font(.merriweather(.subheadline))
-                .foregroundStyle(Color.secondaryLabel)
-                .lineSpacing(4)
+                .font(.mulishFixed(size: Self.descriptionBodyFontSize, weight: .semibold))
+                .foregroundStyle(Color.tertiaryLabel)
+                .tracking(Self.descriptionFontSize * 0.02)
+                .lineSpacing(0)
         }
     }
 }
@@ -208,28 +218,31 @@ struct DetailView: View {
 private struct InfoColumn: View {
     let title: String
     let value: String
+    private static let titleFontSize: CGFloat = 12
+    private static let valueFontSize: CGFloat = 12
 
     var body: some View {
         VStack(spacing: 4) {
             Text(title)
-                .font(.merriweather(.caption))
+                .font(.mulishFixed(size: Self.titleFontSize, weight: .regular))
                 .foregroundStyle(Color.secondaryLabel)
-            Text(value)
-                .font(.merriweather(.subheadline, weight: .medium))
-        }
-    }
-}
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-#Preview("Loading") {
-    NavigationStack {
-        DetailView(mediaId: 1)
+            Text(value)
+                .font(.mulishFixed(size: Self.valueFontSize, weight: .semibold))
+                .foregroundStyle(Color.black)
+                .tracking(Self.valueFontSize * 0.02)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(minWidth: 109, maxWidth: .infinity, alignment: .leading)
     }
-    .environment(Router())
 }
 
 #Preview("Loaded") {
     NavigationStack {
-        DetailView(previewViewModel: .previewLoaded())
+        DetailView(mediaId: 1)
     }
     .environment(Router())
 }

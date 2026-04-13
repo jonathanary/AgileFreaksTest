@@ -36,11 +36,13 @@ extension Font {
     /// Bundled Mulish static faces (`Mulish-*.ttf`); register in `Info.plist` (`UIAppFonts`).
     enum MulishWeight {
         case regular
+        case semibold
         case bold
 
         var postScriptName: String {
             switch self {
             case .regular: "Mulish-Regular"
+            case .semibold: "Mulish-SemiBold"
             case .bold: "Mulish-Bold"
             }
         }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RatingBadge: View {
     let score: String
-    private static let fontSize: CGFloat = 10
+    private static let fontSize: CGFloat = 12
 
     var body: some View {
         HStack(spacing: 4) {
@@ -11,8 +11,8 @@ struct RatingBadge: View {
                 .font(.caption)
 
             Text("\(score)/10 IMDb")
-                .font(.mulishFixed(size: Self.fontSize, weight: .bold))
-                .foregroundStyle(Color.secondaryLabel)
+                .font(.mulishFixed(size: Self.fontSize, weight: .regular))
+                .foregroundStyle(Color.tertiaryLabel)
         }
     }
 }

@@ -107,7 +107,7 @@ private struct PopularMovieRow: View {
                 RatingBadge(score: movie.score)
 
                 if !movie.genres.isEmpty {
-                    FlowLayout(spacing: Design.Spacing.xs) {
+                    HStack(spacing: Design.Spacing.xs) {
                         ForEach(movie.genres.prefix(3), id: \.self) { genre in
                             GenreTag(title: genre)
                         }

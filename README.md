@@ -67,7 +67,7 @@ AgileFreaksTest/
     Home/               HomeView, NowShowingSection, PopularSection
     Detail/             DetailView, CastSection
     Components/         PosterCard, RatingBadge, GenreTag, SectionHeaderRow,
-                        RemoteImage, SectionErrorView, SkeletonRect, FlowLayout
+                        RemoteImage, SectionErrorView, SkeletonRect
 
 AgileFreaksTestTests/
   Domain/               MediaMapperTests, MediaTrailerTests
@@ -99,7 +99,7 @@ View  →  ViewModel  →  Repository (protocol)  →  GraphQLClient (protocol)
 - **Protocol-driven DI**: `GraphQLClientProtocol` and `MediaRepositoryProtocol` allow full mock injection in tests — no singletons in test paths.
 - **DTO ↔ Domain split**: `Media` (Decodable DTO) is never exposed to Views. `MediaMapper` handles all formatting, fallback chains, and HTML stripping. This isolates API changes from the UI.
 - **Generalized pagination**: `HomeViewModel` uses a single generic `loadSection`/`loadMore` pattern instead of duplicated per-section methods.
-- **Shared UI components**: `RemoteImage`, `SectionErrorView`, `SkeletonRect`, `FlowLayout`, and `SectionHeaderRow` eliminate repeated view patterns.
+- **Shared UI components**: `RemoteImage`, `SectionErrorView`, `SkeletonRect`, and `SectionHeaderRow` eliminate repeated view patterns.
 - **`@Observable` over `ObservableObject`**: Leverages the iOS 17 Observation framework for cleaner state management without `@Published`.
 - **`actor` for network I/O**: `GraphQLClient` is an actor, ensuring safe concurrent access.
 - **Incremental home loading**: "Now Showing" and "Popular" are fetched in parallel with `withTaskGroup`. Each section updates independently.

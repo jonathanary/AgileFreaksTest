@@ -39,7 +39,6 @@
 		BB1100000000000000000008 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000008 /* RemoteImage.swift */; };
 		BB1100000000000000000009 /* SectionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000009 /* SectionErrorView.swift */; };
 		BB110000000000000000000A /* SkeletonRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA110000000000000000000A /* SkeletonRect.swift */; };
-		BB110000000000000000000B /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA110000000000000000000B /* FlowLayout.swift */; };
 		DD00000000000000000A /* MockGraphQLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000001 /* MockGraphQLClient.swift */; };
 		DD00000000000000000B /* MockMediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000002 /* MockMediaRepository.swift */; };
 		DD00000000000000000C /* MediaMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000003 /* MediaMapperTests.swift */; };
@@ -119,7 +118,6 @@
 		AA1100000000000000000008 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		AA1100000000000000000009 /* SectionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionErrorView.swift; sourceTree = "<group>"; };
 		AA110000000000000000000A /* SkeletonRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonRect.swift; sourceTree = "<group>"; };
-		AA110000000000000000000B /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		DD000000000000000001 /* MockGraphQLClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGraphQLClient.swift; sourceTree = "<group>"; };
 		DD000000000000000002 /* MockMediaRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaRepository.swift; sourceTree = "<group>"; };
 		DD000000000000000003 /* MediaMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMapperTests.swift; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 		4C000000000000000BFC000B /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				AA110000000000000000000B /* FlowLayout.swift */,
 				4A000000000000000EFA000E /* GenreTag.swift */,
 				4A0000100000000000FA0010 /* PosterCard.swift */,
 				4A000000000000000FFA000F /* RatingBadge.swift */,
@@ -673,7 +670,6 @@
 				BB1100000000000000000008 /* RemoteImage.swift in Sources */,
 				BB1100000000000000000009 /* SectionErrorView.swift in Sources */,
 				BB110000000000000000000A /* SkeletonRect.swift in Sources */,
-				BB110000000000000000000B /* FlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

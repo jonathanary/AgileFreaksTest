@@ -12,7 +12,7 @@ A SwiftUI iOS 17+ movie browser app built for the Agile Freaks coding challenge.
 
 - Xcode 15.0+
 - iOS 17.0+
-- No third-party dependencies
+- [Apollo iOS](https://github.com/apollographql/apollo-ios) 2.x (Swift Package Manager)
 
 ## Build & Run
 
@@ -38,7 +38,22 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
 ```
 
-The test suite uses the **Swift Testing** framework (`import Testing`) with 50 tests covering domain logic, repository, view models, networking, and navigation.
+The test suite uses the **Swift Testing** framework (`import Testing`) and covers domain logic, repository wiring, view models, networking, and navigation.
+
+### GraphQL code generation (Apollo iOS)
+
+Operations live under [`AgileFreaksTest/GraphQL/`](AgileFreaksTest/GraphQL/) (`.graphql` / `.graphqls`). Swift types are generated into [`AgileFreaksTest/GraphQL/Generated/`](AgileFreaksTest/GraphQL/Generated/) using [`apollo-codegen-config.json`](apollo-codegen-config.json) at the repo root.
+
+After changing operations or schema download settings, regenerate from the project root:
+
+```bash
+# One-time: download CLI (see Apollo docs) or use the script from the apollo-ios checkout:
+sh .build/checkouts/apollo-ios/scripts/download-cli.sh "$(pwd)"
+
+./apollo-ios-cli generate --fetch-schema
+```
+
+A root [`Package.swift`](Package.swift) is included only so `swift package resolve` can fetch the Apollo package for the CLI install script; the app itself uses Xcode’s SPM integration.
 
 ### Linting (optional)
 
@@ -58,10 +73,10 @@ A SwiftLint build phase runs automatically in Xcode (advisory — does not fail 
 AgileFreaksTest/
   App/                  Entry point, DesignSystem, AppColors, Logger
   Navigation/           Router + Route enum for typed navigation
-  Domain/               Movie, CastMember (domain models + mocks)
-  Models/               Media DTO, nested Decodable structs (GraphQL response types)
+  Domain/               Movie, CastMember, PageInfo (pagination metadata)
+  GraphQL/              .graphql operations, schema, Apollo-generated Swift (Generated/)
   Repositories/         MediaRepositoryProtocol, MediaRepository, MediaMapper
-  Network/              GraphQLClientProtocol, GraphQLClient (actor), Queries, NetworkError
+  Network/              ApolloClientFactory, NetworkError, APIGraphQLError
   ViewModels/           HomeViewModel, DetailViewModel (@Observable)
   Views/
     Home/               HomeView, NowShowingSection, PopularSection
@@ -75,33 +90,32 @@ AgileFreaksTestTests/
   ViewModels/           HomeViewModelTests, DetailViewModelTests
   Network/              NetworkErrorTests
   Navigation/           RouterTests
-  Mocks/                MockGraphQLClient, MockMediaRepository
+  Mocks/                MockMediaRepository
 ```
 
 ### Layer Diagram
 
 ```
-View  →  ViewModel  →  Repository (protocol)  →  GraphQLClient (protocol)
+View  →  ViewModel  →  Repository (protocol)  →  ApolloClient
                               ↓                          ↓
-                        MediaMapper              URLSession + AniList API
-                     (DTO → Domain)
+                        MediaMapper              AniList GraphQL (generated ops)
+                     (Apollo selection sets → Domain)
 ```
 
-- **Domain layer** (`Movie`, `CastMember`) — pure value types, no framework imports, no optionals where avoidable. Pre-computed display fields (formatted duration, score, language, cleaned description).
-- **Repository layer** (`MediaRepository`) — owns GraphQL query strings, calls `GraphQLClientProtocol`, maps `Media` DTOs to `Movie` domain models via `MediaMapper`.
-- **Network layer** (`GraphQLClient`) — a lightweight `actor` that posts JSON to `https://graphql.anilist.co` and decodes `Codable` responses. Protocol-abstracted for testability.
+- **Domain layer** (`Movie`, `CastMember`, `PageInfo`) — pure value types. Pre-computed display fields (formatted duration, score, language, cleaned description).
+- **Repository layer** (`MediaRepository`) — runs Apollo-generated queries (`NowShowingMovies`, `PopularMovies`, `MediaDetail`), maps Apollo selection sets to `Movie` via `MediaMapper`.
+- **Network layer** — `ApolloClient` with in-memory normalized cache, `networkOnly` cache policy for list/detail fetches, `ApolloClientFactory` for shared setup.
 - **Presentation layer** — `@Observable` ViewModels injected with repository protocol. Views are stateless consumers of domain types.
 - **Design System** (`DesignSystem.swift`, `AppColors.swift`) — centralized spacing, corner radii, shadows, sizing, typography, and semantic color tokens. Zero magic numbers in views.
 
 ### Key Design Decisions
 
-- **No third-party dependencies**: Pure SwiftUI + URLSession.
-- **Protocol-driven DI**: `GraphQLClientProtocol` and `MediaRepositoryProtocol` allow full mock injection in tests — no singletons in test paths.
-- **DTO ↔ Domain split**: `Media` (Decodable DTO) is never exposed to Views. `MediaMapper` handles all formatting, fallback chains, and HTML stripping. This isolates API changes from the UI.
+- **Apollo iOS 2.x**: Type-safe operations, normalized cache, and `async`/`await` `fetch` APIs.
+- **Protocol-driven DI**: `MediaRepositoryProtocol` allows mock repositories in tests.
+- **Generated vs domain**: GraphQL types live under `AniListAPI`; `MediaMapper` keeps `Movie`/`CastMember` free of Apollo imports in the UI layer.
 - **Generalized pagination**: `HomeViewModel` uses a single generic `loadSection`/`loadMore` pattern instead of duplicated per-section methods.
 - **Shared UI components**: `RemoteImage`, `SectionErrorView`, `SkeletonRect`, and `SectionHeaderRow` eliminate repeated view patterns.
 - **`@Observable` over `ObservableObject`**: Leverages the iOS 17 Observation framework for cleaner state management without `@Published`.
-- **`actor` for network I/O**: `GraphQLClient` is an actor, ensuring safe concurrent access.
 - **Incremental home loading**: "Now Showing" and "Popular" are fetched in parallel with `withTaskGroup`. Each section updates independently.
 - **Swift Testing**: Test suite uses `@Suite`, `@Test`, `#expect`, and parameterized tests instead of XCTest.
 

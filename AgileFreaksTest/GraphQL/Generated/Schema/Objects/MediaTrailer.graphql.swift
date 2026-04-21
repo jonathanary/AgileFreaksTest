@@ -1,0 +1,13 @@
+// @generated
+// This file was automatically generated and should not be edited.
+
+import ApolloAPI
+
+extension AniListAPI.Objects {
+  /// Media trailer or advertisement
+  nonisolated static let MediaTrailer = ApolloAPI.Object(
+    typename: "MediaTrailer",
+    implementedInterfaces: [],
+    keyFields: nil
+  )
+}

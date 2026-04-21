@@ -1,10 +1,10 @@
 import Foundation
 
-enum NetworkError: LocalizedError {
+enum NetworkError: LocalizedError, Equatable {
     case invalidResponse
-    case graphQLErrors([GraphQLError])
-    case decodingError(Error)
-    case networkError(Error)
+    case graphQLErrors([APIGraphQLError])
+    case decodingError(String)
+    case networkError(String)
 
     var errorDescription: String? {
         switch self {
@@ -12,10 +12,10 @@ enum NetworkError: LocalizedError {
             return "Invalid server response"
         case .graphQLErrors(let errors):
             return errors.map(\.message).joined(separator: ", ")
-        case .decodingError(let error):
-            return "Decoding error: \(error.localizedDescription)"
-        case .networkError(let error):
-            return error.localizedDescription
+        case .decodingError(let message):
+            return "Decoding error: \(message)"
+        case .networkError(let message):
+            return message
         }
     }
 }

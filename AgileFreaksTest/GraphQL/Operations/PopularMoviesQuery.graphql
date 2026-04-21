@@ -1,0 +1,14 @@
+query PopularMovies($page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      currentPage
+      hasNextPage
+      perPage
+    }
+    media(type: ANIME, format: MOVIE, sort: SCORE_DESC, isAdult: false) {
+      ...MediaListFields
+      bannerImage
+      countryOfOrigin
+    }
+  }
+}

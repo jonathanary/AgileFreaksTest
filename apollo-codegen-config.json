@@ -1,0 +1,44 @@
+{
+  "schemaNamespace": "AniListAPI",
+  "input": {
+    "schemaSearchPaths": [
+      "AgileFreaksTest/GraphQL/**/*.graphqls"
+    ],
+    "operationSearchPaths": [
+      "AgileFreaksTest/GraphQL/**/*.graphql"
+    ]
+  },
+  "output": {
+    "schemaTypes": {
+      "path": "AgileFreaksTest/GraphQL/Generated",
+      "moduleType": {
+        "embeddedInTarget": {
+          "name": "AgileFreaksTest",
+          "accessModifier": "internal"
+        }
+      }
+    },
+    "operations": {
+      "inSchemaModule": {}
+    },
+    "testMocks": {
+      "none": {}
+    }
+  },
+  "schemaDownload": {
+    "downloadMethod": {
+      "introspection": {
+        "endpointURL": "https://graphql.anilist.co",
+        "httpMethod": {
+          "POST": {}
+        },
+        "outputFormat": "SDL",
+        "includeDeprecatedInputValues": false,
+        "includeDeprecatedTypes": false
+      }
+    },
+    "downloadTimeout": 60,
+    "headers": [],
+    "outputPath": "AgileFreaksTest/GraphQL/schema.graphqls"
+  }
+}

@@ -1,0 +1,17 @@
+// @generated
+// This file was automatically generated and should not be edited.
+
+@_spi(Internal) import ApolloAPI
+
+extension AniListAPI {
+  /// The role the character plays in the media
+  nonisolated enum CharacterRole: String, EnumType {
+    /// A primary character role in the media
+    case main = "MAIN"
+    /// A supporting character role in the media
+    case supporting = "SUPPORTING"
+    /// A background character in the media
+    case background = "BACKGROUND"
+  }
+
+}

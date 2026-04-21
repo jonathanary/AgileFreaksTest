@@ -1,0 +1,12 @@
+query NowShowingMovies($page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      currentPage
+      hasNextPage
+      perPage
+    }
+    media(type: ANIME, format: MOVIE, sort: TRENDING_DESC, isAdult: false) {
+      ...MediaListFields
+    }
+  }
+}

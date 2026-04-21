@@ -1,0 +1,61 @@
+query MediaDetail($id: Int!) {
+  Media(id: $id, type: ANIME) {
+    id
+    title {
+      romaji
+      english
+      native
+    }
+    type
+    format
+    status
+    description(asHtml: false)
+    duration
+    episodes
+    seasonYear
+    averageScore
+    meanScore
+    popularity
+    genres
+    source
+    countryOfOrigin
+    coverImage {
+      extraLarge
+      large
+      medium
+      color
+    }
+    bannerImage
+    trailer {
+      id
+      site
+      thumbnail
+    }
+    characters(sort: ROLE, perPage: 10) {
+      edges {
+        node {
+          id
+          name {
+            full
+            native
+          }
+          image {
+            large
+            medium
+          }
+        }
+        role
+        voiceActors(language: JAPANESE) {
+          id
+          name {
+            full
+          }
+          image {
+            medium
+          }
+          languageV2
+        }
+      }
+    }
+  }
+}

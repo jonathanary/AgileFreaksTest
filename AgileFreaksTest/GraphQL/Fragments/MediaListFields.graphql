@@ -1,0 +1,17 @@
+fragment MediaListFields on Media {
+  id
+  title {
+    romaji
+    english
+    native
+  }
+  coverImage {
+    extraLarge
+    large
+    medium
+    color
+  }
+  averageScore
+  genres
+  duration
+}

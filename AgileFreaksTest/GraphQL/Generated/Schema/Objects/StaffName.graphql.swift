@@ -1,0 +1,13 @@
+// @generated
+// This file was automatically generated and should not be edited.
+
+import ApolloAPI
+
+extension AniListAPI.Objects {
+  /// The names of the staff member
+  nonisolated static let StaffName = ApolloAPI.Object(
+    typename: "StaffName",
+    implementedInterfaces: [],
+    keyFields: nil
+  )
+}

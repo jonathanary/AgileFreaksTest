@@ -13,7 +13,7 @@ struct NetworkErrorTests {
 
     @Test("Single GraphQL error description")
     func graphQLErrorsDescription() {
-        let errors = [GraphQLError(message: "Not found", status: 404)]
+        let errors = [APIGraphQLError(message: "Not found", status: 404)]
         let error = NetworkError.graphQLErrors(errors)
         #expect(error.errorDescription == "Not found")
     }
@@ -21,8 +21,8 @@ struct NetworkErrorTests {
     @Test("Multiple GraphQL errors are comma-joined")
     func multipleGraphQLErrorsJoined() {
         let errors = [
-            GraphQLError(message: "Error A", status: nil),
-            GraphQLError(message: "Error B", status: nil)
+            APIGraphQLError(message: "Error A", status: nil),
+            APIGraphQLError(message: "Error B", status: nil)
         ]
         let error = NetworkError.graphQLErrors(errors)
         #expect(error.errorDescription == "Error A, Error B")
@@ -30,15 +30,13 @@ struct NetworkErrorTests {
 
     @Test("Decoding error wraps underlying description")
     func decodingErrorDescription() {
-        let underlying = NSError(domain: "test", code: 1, userInfo: [NSLocalizedDescriptionKey: "bad json"])
-        let error = NetworkError.decodingError(underlying)
+        let error = NetworkError.decodingError("bad json")
         #expect(error.errorDescription?.contains("bad json") == true)
     }
 
     @Test("Network error forwards underlying description")
     func networkErrorDescription() {
-        let underlying = NSError(domain: NSURLErrorDomain, code: -1009, userInfo: [NSLocalizedDescriptionKey: "No connection"])
-        let error = NetworkError.networkError(underlying)
+        let error = NetworkError.networkError("No connection")
         #expect(error.errorDescription == "No connection")
     }
 }

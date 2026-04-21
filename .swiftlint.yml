@@ -8,6 +8,7 @@ included:
 excluded:
   - AgileFreaksTest/Resources
   - AgileFreaksTest/build
+  - AgileFreaksTest/GraphQL/Generated
   - "**/DerivedSources"
 
 disabled_rules:

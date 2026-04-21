@@ -2,31 +2,63 @@ import Foundation
 
 enum MediaMapper {
 
-    static func map(_ dto: Media) -> Movie {
+    // MARK: - Apollo → Movie
+
+    static func mapNowShowing(_ media: AniListAPI.NowShowingMoviesQuery.Data.Page.Medium) -> Movie {
         Movie(
-            id: dto.id,
-            displayTitle: resolveTitle(dto.title),
-            score: formatScore(dto.averageScore),
-            duration: formatDuration(dto.duration),
-            language: resolveLanguage(dto.countryOfOrigin),
-            description: stripHTML(dto.description),
-            genres: dto.genres ?? [],
-            format: dto.format ?? "N/A",
-            coverImageURL: dto.coverImage?.large ?? dto.coverImage?.extraLarge ?? dto.coverImage?.medium,
-            bannerImageURL: dto.bannerImage ?? dto.coverImage?.extraLarge,
-            trailerURL: dto.trailer?.url,
-            cast: mapCast(dto.characters)
+            id: media.id,
+            displayTitle: resolveTitle(english: media.title?.english, romaji: media.title?.romaji, native: media.title?.native),
+            score: formatScore(media.averageScore),
+            duration: formatDuration(media.duration),
+            language: "Unknown",
+            description: "",
+            genres: normalizedGenres(media.genres),
+            format: "N/A",
+            coverImageURL: media.coverImage?.large ?? media.coverImage?.extraLarge ?? media.coverImage?.medium,
+            bannerImageURL: nil,
+            trailerURL: nil,
+            cast: []
         )
     }
 
-    static func mapList(_ dtos: [Media]) -> [Movie] {
-        dtos.map(map)
+    static func mapPopular(_ media: AniListAPI.PopularMoviesQuery.Data.Page.Medium) -> Movie {
+        Movie(
+            id: media.id,
+            displayTitle: resolveTitle(english: media.title?.english, romaji: media.title?.romaji, native: media.title?.native),
+            score: formatScore(media.averageScore),
+            duration: formatDuration(media.duration),
+            language: resolveLanguage(media.countryOfOrigin),
+            description: "",
+            genres: normalizedGenres(media.genres),
+            format: "N/A",
+            coverImageURL: media.coverImage?.large ?? media.coverImage?.extraLarge ?? media.coverImage?.medium,
+            bannerImageURL: media.bannerImage ?? media.coverImage?.extraLarge,
+            trailerURL: nil,
+            cast: []
+        )
+    }
+
+    static func mapDetail(_ media: AniListAPI.MediaDetailQuery.Data.Media) -> Movie {
+        Movie(
+            id: media.id,
+            displayTitle: resolveTitle(english: media.title?.english, romaji: media.title?.romaji, native: media.title?.native),
+            score: formatScore(media.averageScore),
+            duration: formatDuration(media.duration),
+            language: resolveLanguage(media.countryOfOrigin),
+            description: stripHTML(media.description),
+            genres: normalizedGenres(media.genres),
+            format: media.format?.rawValue ?? "N/A",
+            coverImageURL: media.coverImage?.large ?? media.coverImage?.extraLarge ?? media.coverImage?.medium,
+            bannerImageURL: media.bannerImage ?? media.coverImage?.extraLarge,
+            trailerURL: trailerURL(id: media.trailer?.id, site: media.trailer?.site),
+            cast: mapCast(media.characters)
+        )
     }
 
     // MARK: - Field helpers
 
-    static func resolveTitle(_ title: MediaTitle?) -> String {
-        title?.english ?? title?.romaji ?? title?.native ?? "Unknown"
+    static func resolveTitle(english: String?, romaji: String?, native: String?) -> String {
+        english ?? romaji ?? native ?? "Unknown"
     }
 
     static func formatScore(_ averageScore: Int?) -> String {
@@ -59,17 +91,38 @@ enum MediaMapper {
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    // MARK: - Cast
+    // MARK: - Private
 
-    private static func mapCast(_ connection: CharacterConnection?) -> [CastMember] {
-        guard let edges = connection?.edges else { return [] }
+    private static func normalizedGenres(_ genres: [String?]?) -> [String] {
+        genres?.compactMap { $0 } ?? []
+    }
+
+    /// Exposed for unit tests (`@testable import`).
+    internal static func trailerPlaybackURL(id: String?, site: String?) -> URL? {
+        trailerURL(id: id, site: site)
+    }
+
+    private static func trailerURL(id: String?, site: String?) -> URL? {
+        guard let id, let site else { return nil }
+        switch site.lowercased() {
+        case "youtube":
+            return URL(string: "https://www.youtube.com/watch?v=\(id)")
+        case "dailymotion":
+            return URL(string: "https://www.dailymotion.com/video/\(id)")
+        default:
+            return nil
+        }
+    }
+
+    private static func mapCast(_ characters: AniListAPI.MediaDetailQuery.Data.Media.Characters?) -> [CastMember] {
+        guard let edges = characters?.edges else { return [] }
         return edges.compactMap { edge -> CastMember? in
-            guard let node = edge.node else { return nil }
+            guard let edge, let node = edge.node else { return nil }
             return CastMember(
                 id: node.id,
                 name: node.name?.full ?? "Unknown",
                 imageURL: node.image?.large ?? node.image?.medium,
-                voiceActorName: edge.voiceActors?.first?.name?.full
+                voiceActorName: edge.voiceActors?.compactMap { $0 }.first?.name?.full
             )
         }
     }

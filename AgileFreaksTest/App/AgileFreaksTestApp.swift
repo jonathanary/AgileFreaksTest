@@ -18,6 +18,8 @@ struct AgileFreaksTestApp: App {
                             switch route {
                             case .detail(let mediaId):
                                 DetailView(mediaId: mediaId)
+                            case .videoPlayer(let url):
+                                VideoPlayerView(url: url)
                             }
                         }
                 }

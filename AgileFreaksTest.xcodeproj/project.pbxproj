@@ -31,6 +31,7 @@
 		4B0000150000000000FB0015 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000150000000000FA0015 /* AppFonts.swift */; };
 		4B0000160000000000FB0016 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000160000000000FA0016 /* AppColors.swift */; };
 		4B0000180000000000FB0018 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000180000000000FA0018 /* SectionHeader.swift */; };
+		4B0000190000000000FB0019 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0000190000000000FA0019 /* VideoPlayerView.swift */; };
 		5AD0DB5A13D966C3154AA6E1 /* Schema/Objects/MediaCoverImage.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = D526D86E4DBC2D3BF3237D96 /* Schema/Objects/MediaCoverImage.graphql.swift */; };
 		5E6C8DA66D51D8FA49CF0D97 /* Schema/Objects/Media.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D78C9BBED385B0D32024F /* Schema/Objects/Media.graphql.swift */; };
 		619337B3949BE0679CC06B8A /* Schema/Enums/MediaType.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F50E568D4DF83F4854132FB /* Schema/Enums/MediaType.graphql.swift */; };
@@ -127,6 +128,7 @@
 		4A0000150000000000FA0015 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
 		4A0000160000000000FA0016 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		4A0000180000000000FA0018 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		4A0000190000000000FA0019 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		4E1102420157C7B159F23027 /* Schema/Enums/CharacterRole.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/Enums/CharacterRole.graphql.swift; sourceTree = "<group>"; };
 		51DD1235910214CAE903DFDF /* Schema/Enums/MediaStatus.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/Enums/MediaStatus.graphql.swift; sourceTree = "<group>"; };
 		5C9B5DEB46294CDAB0AEDC81 /* ListPaginationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPaginationInfo.swift; sourceTree = "<group>"; };
@@ -323,8 +325,17 @@
 				4C0000090000000000FC0009 /* Home */,
 				4C000000000000000AFC000A /* Detail */,
 				4C000000000000000BFC000B /* Components */,
+				4C000000000000001AFC001A /* Player */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4C000000000000001AFC001A /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				4A0000190000000000FA0019 /* VideoPlayerView.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		4C0000090000000000FC0009 /* Home */ = {
@@ -661,6 +672,7 @@
 				4B0000150000000000FB0015 /* AppFonts.swift in Sources */,
 				4B0000160000000000FB0016 /* AppColors.swift in Sources */,
 				4B0000180000000000FB0018 /* SectionHeader.swift in Sources */,
+				4B0000190000000000FB0019 /* VideoPlayerView.swift in Sources */,
 				4B000000000000000AFB000A /* NowShowingSection.swift in Sources */,
 				4B000000000000000BFB000B /* PopularSection.swift in Sources */,
 				4B000000000000000CFB000C /* DetailView.swift in Sources */,

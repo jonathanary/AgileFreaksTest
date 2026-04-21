@@ -5,7 +5,10 @@ struct DetailView: View {
     private var loadOnAppear: Bool
     @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
-    @Environment(\.openURL) private var openURL
+
+    private static let trailerStreamURL = URL(
+        string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    )!
 
     init(mediaId: Int) {
         self.mediaId = mediaId
@@ -126,9 +129,9 @@ struct DetailView: View {
                 )
             }
 
-            if let trailerURL = movie.trailerURL {
+            if movie.trailerURL != nil {
                 Button {
-                    openURL(trailerURL)
+                    router.navigate(to: .videoPlayer(url: Self.trailerStreamURL))
                 } label: {
                     VStack(spacing: Design.Spacing.xxs) {
                         Image("playButton")

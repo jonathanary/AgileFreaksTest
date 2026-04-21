@@ -80,6 +80,7 @@ struct HomeView: View {
             Button("Retry") {
                 Task { await viewModel.loadMovies() }
             }
+
             .buttonStyle(.borderedProminent)
         }
         .padding()
@@ -97,6 +98,8 @@ private struct HomeViewPreviewContainer: View {
                     switch route {
                     case .detail(let mediaId):
                         DetailView(mediaId: mediaId)
+                    case .videoPlayer(let url):
+                        VideoPlayerView(url: url)
                     }
                 }
         }

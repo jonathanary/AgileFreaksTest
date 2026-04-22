@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import UIKit
 
 @MainActor
 @Observable
@@ -13,6 +14,8 @@ final class PlayerViewModel {
     @ObservationIgnored private var boundary: AnyCancellable?
     @ObservationIgnored private var adFinish: AnyCancellable?
     @ObservationIgnored private var adTicker: AnyCancellable?
+    @ObservationIgnored private var bgCancellable: AnyCancellable?
+    @ObservationIgnored private var fgCancellable: AnyCancellable?
 
     init(
         mainPlayer: VideoPlayer,
@@ -33,6 +36,7 @@ final class PlayerViewModel {
         boundary = mainPlayer.observeBoundary(at: 15) { [weak self] in
             self?.startAd()
         }
+        subscribeToLifecycle()
         Log.debug("Player onAppear \(url.absoluteString)", category: .player)
     }
 
@@ -40,9 +44,38 @@ final class PlayerViewModel {
         boundary?.cancel()
         adFinish?.cancel()
         adTicker?.cancel()
+        bgCancellable?.cancel()
+        fgCancellable?.cancel()
         mainPlayer.pause()
         adPlayer.pause()
         Log.debug("Player onDisappear", category: .player)
+    }
+
+    private func subscribeToLifecycle() {
+        bgCancellable?.cancel()
+        fgCancellable?.cancel()
+        let nc = NotificationCenter.default
+        bgCancellable = nc.publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in self?.handleDidEnterBackground() }
+        fgCancellable = nc.publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in self?.handleWillEnterForeground() }
+    }
+
+    private func handleDidEnterBackground() {
+        mainPlayer.pause()
+        adPlayer.pause()
+        Log.debug("Player backgrounded, paused both", category: .player)
+    }
+
+    private func handleWillEnterForeground() {
+        switch state {
+        case .playingMain:
+            mainPlayer.play()
+        case .playingAd:
+            mainPlayer.play()
+            adPlayer.play()
+        }
+        Log.debug("Player foregrounded, resumed state=\(state)", category: .player)
     }
 
     // MARK: - Ad swap

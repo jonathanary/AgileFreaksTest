@@ -34,7 +34,7 @@ struct VideoPlayerView: View {
                 // underlying AVPlayerViewController is never rebuilt.
                 mainPlayerLayer(size: proxy.size)
 
-                // Banner sits on the left, above both video layers.
+                // Banner sits bottom-leading, above both video layers.
                 bannerOverlay
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -109,16 +109,14 @@ struct VideoPlayerView: View {
     @ViewBuilder
     private var bannerOverlay: some View {
         if case .playingAd(let ad, let remaining) = viewModel.state {
-            HStack(alignment: .center) {
-                AdBanner(
-                    ad: ad,
-                    remaining: remaining,
-                    onSeeMore: { showBrowser = true }
-                )
-                .padding(.leading, Design.Spacing.xxl)
-                Spacer(minLength: 0)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            AdBanner(
+                ad: ad,
+                remaining: remaining,
+                onSeeMore: { showBrowser = true }
+            )
+            .padding(.leading, Design.Spacing.xxl)
+            .padding(.bottom, Design.Spacing.xxl)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             .transition(.opacity)
         }
     }

@@ -9,8 +9,12 @@ struct AdTests {
     func dunkinMockValues() {
         let ad = Ad.dunkinMock
         #expect(ad.name == "Dunkin")
+        #expect(ad.headline == "Your Dunkin' Moment")
+        #expect(ad.ctaTitle == "Grab yours now")
+        #expect(ad.bannerTitle == "Your Dunkin' Moment")
+        #expect(ad.bannerCTATitle == "Grab yours now")
         #expect(ad.duration == 15)
-        #expect(ad.detailURL?.absoluteString == "https://yori-api.agilefreaks.com/s/dunkin-3")
+        #expect(ad.detailURL?.absoluteString == "https://yori-api.agilefreaks.com/s/dunkin-69")
         #expect(ad.streamURL.scheme == "https")
     }
 }

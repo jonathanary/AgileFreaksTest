@@ -5,41 +5,56 @@ struct AdBanner: View {
     let remaining: TimeInterval
     let onSeeMore: () -> Void
 
-    private var secondsRemaining: Int {
-        max(1, Int(ceil(remaining)))
+    private var timerText: String {
+        let total = max(0, Int(ceil(remaining)))
+        let minutes = total / 60
+        let seconds = total % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Design.Spacing.sm) {
-            Text(ad.name)
-                .font(.merriweather(.title3, weight: .bold))
-                .foregroundStyle(.white)
+        VStack(alignment: .leading, spacing: Design.Spacing.md) {
+            HStack(alignment: .center, spacing: Design.Spacing.xxs) {
+                Text(ad.bannerTitle)
+                    .font(.mulishFixed(size: Design.FontSize.body, weight: .bold))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("\(secondsRemaining)s")
-                .font(.merriweather(.body, weight: .medium))
-                .foregroundStyle(.white.opacity(0.85))
-                .monospacedDigit()
-
-            if ad.detailURL != nil {
-                Button(action: onSeeMore) {
-                    Text("See More")
-                        .font(.merriweather(.callout, weight: .semibold))
-                        .foregroundStyle(.black)
-                        .padding(.horizontal, Design.Spacing.lg)
-                        .padding(.vertical, Design.Spacing.sm)
-                        .background(
-                            RoundedRectangle(cornerRadius: Design.CornerRadius.small)
-                                .fill(Color.white)
-                        )
+                if ad.detailURL != nil {
+                    Button(action: onSeeMore) {
+                        Text(ad.bannerCTATitle)
+                            .font(.mulishFixed(size: Design.FontSize.body, weight: .bold))
+                            .foregroundStyle(.black)
+                            .padding(.horizontal, Design.Spacing.lg)
+                            .padding(.vertical, Design.Spacing.sm)
+                            .background(Capsule().fill(Color.white))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(ad.bannerCTATitle)
+                    .clipShape(RoundedRectangle(cornerRadius: Design.CornerRadius.medium))
                 }
-                .accessibilityLabel("See More")
             }
+
+            Text("Ad • \(timerText)")
+                .font(.mulishFixed(size: Design.FontSize.body, weight: .bold))
+                .foregroundStyle(.white)
+                .monospacedDigit()
         }
         .padding(Design.Spacing.lg)
-        .background(
-            RoundedRectangle(cornerRadius: Design.CornerRadius.medium)
-                .fill(Color.black.opacity(0.65))
+        .frame(maxWidth: 360, alignment: .leading)
+        .background(Color.black)
+        .clipShape(RoundedRectangle(cornerRadius: Design.CornerRadius.medium))
+    }
+}
+
+#Preview("AdBanner") {
+    ZStack {
+        Color.gray
+        AdBanner(
+            ad: .dunkinMock,
+            remaining: 15,
+            onSeeMore: {}
         )
-        .fixedSize(horizontal: true, vertical: true)
     }
 }

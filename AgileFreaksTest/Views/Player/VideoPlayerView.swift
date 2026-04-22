@@ -1,3 +1,4 @@
+import AVKit
 import SwiftUI
 
 struct VideoPlayerView: View {
@@ -33,8 +34,7 @@ struct VideoPlayerView: View {
                 // underlying AVPlayerViewController is never rebuilt.
                 mainPlayerLayer(size: proxy.size)
 
-//                Link("This is the link", destination: viewModel.ad.detailURL ?? url)
-                    
+                // Banner sits on the left, above both video layers.
                 bannerOverlay
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -55,11 +55,12 @@ struct VideoPlayerView: View {
                 .accessibilityLabel("Close player")
             }
         }
-        .sheet(isPresented: $showBrowser, content: {
-            if let url = viewModel.ad.detailURL {
-               InAppBrowserView(url: url)
+        .sheet(isPresented: $showBrowser) {
+            if let detailURL = viewModel.ad.detailURL {
+                InAppBrowserView(url: detailURL)
+                    .ignoresSafeArea()
             }
-        })
+        }
         .onAppear { viewModel.onAppear(url: url) }
         .onDisappear { viewModel.onDisappear() }
     }
@@ -109,9 +110,11 @@ struct VideoPlayerView: View {
     private var bannerOverlay: some View {
         if case .playingAd(let ad, let remaining) = viewModel.state {
             HStack(alignment: .center) {
-                BannerView(title: ad.name, buttonText: ad.name, ticker: "\(remaining)", seeMore: {
-                    showBrowser = true
-                })
+                AdBanner(
+                    ad: ad,
+                    remaining: remaining,
+                    onSeeMore: { showBrowser = true }
+                )
                 .padding(.leading, Design.Spacing.xxl)
                 Spacer(minLength: 0)
             }
@@ -121,11 +124,11 @@ struct VideoPlayerView: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        // swiftlint:disable:next force_unwrapping
-//        let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!
-//        VideoPlayerView(url: url)
-//    }
-//    .environment(Router())
-//}
+#Preview {
+    NavigationStack {
+        // swiftlint:disable:next force_unwrapping
+        let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!
+        VideoPlayerView(url: url)
+    }
+    .environment(Router())
+}

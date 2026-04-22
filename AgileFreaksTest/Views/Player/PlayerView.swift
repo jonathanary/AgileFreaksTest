@@ -4,7 +4,7 @@ import SwiftUI
 struct PlayerView: UIViewControllerRepresentable {
     let player: AVPlayer
     var showsPlaybackControls: Bool = true
-    var allowsPictureInPicturePlayback: Bool = true
+    var allowsPictureInPicturePlayback: Bool = false
     var canStartPictureInPictureAutomatically: Bool = false
 
     func makeUIViewController(context: Context) -> AVPlayerViewController {

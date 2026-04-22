@@ -33,7 +33,9 @@ struct VideoPlayerView: View {
                 // underlying AVPlayerViewController is never rebuilt.
                 mainPlayerLayer(size: proxy.size)
 
-                // TODO: Banner sits on the left, above both video layers.
+//                Link("This is the link", destination: viewModel.ad.detailURL ?? url)
+                    
+                bannerOverlay
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
             .animation(.easeInOut(duration: 0.35), value: isAdPlaying)
@@ -53,7 +55,11 @@ struct VideoPlayerView: View {
                 .accessibilityLabel("Close player")
             }
         }
-        // TODO: InAppBrowser sheet
+        .sheet(isPresented: $showBrowser, content: {
+            if let url = viewModel.ad.detailURL {
+               InAppBrowserView(url: url)
+            }
+        })
         .onAppear { viewModel.onAppear(url: url) }
         .onDisappear { viewModel.onDisappear() }
     }
@@ -69,7 +75,7 @@ struct VideoPlayerView: View {
             PlayerView(
                 player: avPlayer,
                 showsPlaybackControls: !isAdPlaying,
-                allowsPictureInPicturePlayback: !isAdPlaying
+                allowsPictureInPicturePlayback: false
             )
             .frame(
                 width: isAdPlaying ? Self.miniWidth : size.width,
@@ -99,14 +105,27 @@ struct VideoPlayerView: View {
         }
     }
 
-   // TODO: bannerOverlay
+    @ViewBuilder
+    private var bannerOverlay: some View {
+        if case .playingAd(let ad, let remaining) = viewModel.state {
+            HStack(alignment: .center) {
+                BannerView(title: ad.name, buttonText: ad.name, ticker: "\(remaining)", seeMore: {
+                    showBrowser = true
+                })
+                .padding(.leading, Design.Spacing.xxl)
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .transition(.opacity)
+        }
+    }
 }
 
-#Preview {
-    NavigationStack {
-        // swiftlint:disable:next force_unwrapping
-        let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!
-        VideoPlayerView(url: url)
-    }
-    .environment(Router())
-}
+//#Preview {
+//    NavigationStack {
+//        // swiftlint:disable:next force_unwrapping
+//        let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!
+//        VideoPlayerView(url: url)
+//    }
+//    .environment(Router())
+//}

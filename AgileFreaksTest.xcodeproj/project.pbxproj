@@ -72,6 +72,7 @@
 		E94B2D252F89272E0059DB18 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94B2D242F89272E0059DB18 /* NetworkError.swift */; };
 		E9B386BEC231A40AB9380CE7 /* Schema/Objects/CharacterImage.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA1183E14EE032D5C12254 /* Schema/Objects/CharacterImage.graphql.swift */; };
 		E9C49DB52F97850E00C5B50B /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = E9C49DB42F97850E00C5B50B /* Apollo */; };
+		E9C8BEA02F98E788004EBB37 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8BE9F2F98E788004EBB37 /* BannerView.swift */; };
 		E9EF8DFB2F8AD50E00E84DE3 /* Merriweather_36pt-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D8D2F8AD50E00E84DE3 /* Merriweather_36pt-Bold.ttf */; };
 		E9EF8E1A2F8AD50E00E84DE3 /* Merriweather_36pt-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D962F8AD50E00E84DE3 /* Merriweather_36pt-Regular.ttf */; };
 		E9EF8E472F8AD50E00E84DE3 /* Merriweather_36pt-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9EF8D972F8AD50E00E84DE3 /* Merriweather_36pt-SemiBold.ttf */; };
@@ -83,7 +84,6 @@
 		EBCB402BF09266AAED7A6E0C /* Schema/SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF621423A8414E0FB5AF54 /* Schema/SchemaConfiguration.swift */; };
 		F0FEC841AEE00DAEDC241558 /* Schema/CustomScalars/CountryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDE1BDADCC7404825AFAA67 /* Schema/CustomScalars/CountryCode.swift */; };
 		F4E46269097260786C00B68B /* Operations/Queries/PopularMoviesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3090C2C6F1024840A6547EC1 /* Operations/Queries/PopularMoviesQuery.graphql.swift */; };
-		FE862379CA54EFE8674053F6 /* Schema/Objects/Staff.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAD9111F72B991C1D5B96CE /* Schema/Objects/Staff.graphql.swift */; };
 		FB1100000000000000000001 /* Ad.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1100000000000000000001 /* Ad.swift */; };
 		FB1100000000000000000004 /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1100000000000000000004 /* PlayerState.swift */; };
 		FB1100000000000000000009 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1100000000000000000009 /* PlayerViewModel.swift */; };
@@ -94,6 +94,7 @@
 		FB2200000000000000000003 /* AdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2200000000000000000003 /* AdTests.swift */; };
 		FB2200000000000000000007 /* PlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2200000000000000000007 /* PlayerViewModelTests.swift */; };
 		FB220000000000000000000A /* FakeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA220000000000000000000A /* FakeVideoPlayer.swift */; };
+		FE862379CA54EFE8674053F6 /* Schema/Objects/Staff.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAD9111F72B991C1D5B96CE /* Schema/Objects/Staff.graphql.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +175,7 @@
 		DD00000000000000001A /* AgileFreaksTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgileFreaksTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E589896595C094D113699B84 /* Schema/SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		E94B2D242F89272E0059DB18 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		E9C8BE9F2F98E788004EBB37 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		E9EF8D8B2F8AD50E00E84DE3 /* Merriweather_36pt-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather_36pt-Black.ttf"; sourceTree = "<group>"; };
 		E9EF8D8D2F8AD50E00E84DE3 /* Merriweather_36pt-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather_36pt-Bold.ttf"; sourceTree = "<group>"; };
 		E9EF8D942F8AD50E00E84DE3 /* Merriweather_36pt-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather_36pt-Medium.ttf"; sourceTree = "<group>"; };
@@ -187,8 +189,6 @@
 		E9EF8E972F8C18DC00E84DE3 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		E9EF8E982F8C18DC00E84DE3 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		F1B3DCCE5824FB0BA7CCC38C /* Schema/Objects/CharacterEdge.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/Objects/CharacterEdge.graphql.swift; sourceTree = "<group>"; };
-		FD7A86BAEB2FEDA69A6FF131 /* Schema/Objects/PageInfo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/Objects/PageInfo.graphql.swift; sourceTree = "<group>"; };
-		FFDE1BDADCC7404825AFAA67 /* Schema/CustomScalars/CountryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/CustomScalars/CountryCode.swift; sourceTree = "<group>"; };
 		FA1100000000000000000001 /* Ad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ad.swift; sourceTree = "<group>"; };
 		FA1100000000000000000004 /* PlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
 		FA1100000000000000000009 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
@@ -199,6 +199,8 @@
 		FA2200000000000000000003 /* AdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTests.swift; sourceTree = "<group>"; };
 		FA2200000000000000000007 /* PlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModelTests.swift; sourceTree = "<group>"; };
 		FA220000000000000000000A /* FakeVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeVideoPlayer.swift; sourceTree = "<group>"; };
+		FD7A86BAEB2FEDA69A6FF131 /* Schema/Objects/PageInfo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/Objects/PageInfo.graphql.swift; sourceTree = "<group>"; };
+		FFDE1BDADCC7404825AFAA67 /* Schema/CustomScalars/CountryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema/CustomScalars/CountryCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +279,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4C000000000000001AFC001A /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				FA110000000000000000000D /* InAppBrowserView.swift */,
+				FA110000000000000000000A /* PlayerView.swift */,
+				4A0000190000000000FA0019 /* VideoPlayerView.swift */,
+				E9C8BE9F2F98E788004EBB37 /* BannerView.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		4C0000010000000000FC0001 = {
 			isa = PBXGroup;
 			children = (
@@ -302,16 +315,6 @@
 				4C000000000000000CFC000C /* Resources */,
 			);
 			path = AgileFreaksTest;
-			sourceTree = "<group>";
-		};
-		FC1100000000000000000001 /* Player */ = {
-			isa = PBXGroup;
-			children = (
-				FA110000000000000000000C /* AVVideoPlayer.swift */,
-				FA1100000000000000000004 /* PlayerState.swift */,
-				FA110000000000000000000B /* VideoPlayer.swift */,
-			);
-			path = Player;
 			sourceTree = "<group>";
 		};
 		4C0000030000000000FC0003 /* App */ = {
@@ -360,16 +363,6 @@
 				4C000000000000001AFC001A /* Player */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		4C000000000000001AFC001A /* Player */ = {
-			isa = PBXGroup;
-			children = (
-				FA110000000000000000000D /* InAppBrowserView.swift */,
-				FA110000000000000000000A /* PlayerView.swift */,
-				4A0000190000000000FA0019 /* VideoPlayerView.swift */,
-			);
-			path = Player;
 			sourceTree = "<group>";
 		};
 		4C0000090000000000FC0009 /* Home */ = {
@@ -566,6 +559,16 @@
 			path = GraphQL/Generated;
 			sourceTree = "<group>";
 		};
+		FC1100000000000000000001 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				FA110000000000000000000C /* AVVideoPlayer.swift */,
+				FA1100000000000000000004 /* PlayerState.swift */,
+				FA110000000000000000000B /* VideoPlayer.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -613,7 +616,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					4D0000010000000000FD0001 = {
 						CreatedOnToolsVersion = 15.0;
@@ -708,6 +711,7 @@
 				4B0000090000000000FB0009 /* HomeView.swift in Sources */,
 				4B0000140000000000FB0014 /* Logger.swift in Sources */,
 				4B0000150000000000FB0015 /* AppFonts.swift in Sources */,
+				E9C8BEA02F98E788004EBB37 /* BannerView.swift in Sources */,
 				4B0000160000000000FB0016 /* AppColors.swift in Sources */,
 				4B0000180000000000FB0018 /* SectionHeader.swift in Sources */,
 				4B0000190000000000FB0019 /* VideoPlayerView.swift in Sources */,
@@ -855,6 +859,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -911,6 +916,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};

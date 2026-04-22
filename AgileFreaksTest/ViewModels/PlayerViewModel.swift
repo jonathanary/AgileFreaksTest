@@ -29,6 +29,7 @@ final class PlayerViewModel {
     func onAppear(url: URL) {
         mainPlayer.load(url: url)
         mainPlayer.play()
+        // Set the 15 seconds boundary
         boundary = mainPlayer.observeBoundary(at: 15) { [weak self] in
             self?.startAd()
         }

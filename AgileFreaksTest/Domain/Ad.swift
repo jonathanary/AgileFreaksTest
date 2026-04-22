@@ -29,7 +29,7 @@ extension Ad {
         name: "Dunkin",
         duration: 15,
         streamURL: URL(string: "https://socialtv-staging-streams.agilefreaks.com/hls/job_671096_720p/index.m3u8")!,
-        detailURL: URL(string: "https://yori-api.agilefreaks.com/s/dunkin-3")!
+        detailURL: URL(string: "https://yori-api.agilefreaks.com/s/dunkin-69")!
     )
     // swiftlint:enable force_unwrapping
 }

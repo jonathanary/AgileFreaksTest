@@ -1,54 +1,44 @@
-import AVFoundation
-import AVKit
-import Combine
 import SwiftUI
-
-private enum PlaybackPhase {
-    case ad
-    case main
-}
-
-private let preRollURL = URL(string: "https://socialtv-staging-streams.agilefreaks.com/hls/job_671096_720p/index.m3u8")!
 
 struct VideoPlayerView: View {
     let url: URL
 
     @Environment(Router.self) private var router
-    @State private var adPlayer: AVPlayer
-    @State private var mainPlayer: AVPlayer
-    @State private var phase: PlaybackPhase = .main
+    @State private var viewModel: PlayerViewModel
+    @State private var showBrowser = false
 
-    init(url: URL) {
+    init(url: URL, viewModel: PlayerViewModel? = nil) {
         self.url = url
-        _adPlayer = State(initialValue: AVPlayer(url: preRollURL))
-        _mainPlayer = State(initialValue: {
-            let player = AVPlayer(url: url)
-            player.isMuted = true
-            return player
-        }())
+        let resolved = viewModel ?? PlayerViewModel(
+            mainPlayer: AVVideoPlayer(),
+            adPlayer: AVVideoPlayer()
+        )
+        _viewModel = State(initialValue: resolved)
+    }
+
+    private var isAdPlaying: Bool {
+        if case .playingAd = viewModel.state { return true }
+        return false
     }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            if phase == .ad {
-                VideoPlayer(player: adPlayer)
-                    .allowsHitTesting(false)
-                    .ignoresSafeArea()
-                    .transition(.opacity)
-            }
+        GeometryReader { proxy in
+            ZStack(alignment: .bottomTrailing) {
+                Color.black
 
-            VideoPlayer(player: mainPlayer)
-                .allowsHitTesting(true)
-                .frame(
-                    width: phase == .ad ? 160 : nil,
-                    height: phase == .ad ? 90 : nil
-                )
-                .clipShape(RoundedRectangle(cornerRadius: phase == .ad ? 12 : 0))
-                .padding(phase == .ad ? 16 : 0)
-                .ignoresSafeArea(edges: phase == .ad ? [] : .all)
+                // Ad fills the whole screen *under* the minimized main player.
+                adPlayerLayer(size: proxy.size)
+
+                // Main player keeps its identity across state changes so the
+                // underlying AVPlayerViewController is never rebuilt.
+                mainPlayerLayer(size: proxy.size)
+
+                // TODO: Banner sits on the left, above both video layers.
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .animation(.easeInOut(duration: 0.35), value: isAdPlaying)
         }
-        .background(Color.black)
-        .animation(.easeInOut(duration: 0.35), value: phase)
+        .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
@@ -63,36 +53,60 @@ struct VideoPlayerView: View {
                 .accessibilityLabel("Close player")
             }
         }
-        .onAppear {
-            try? AVAudioSession.sharedInstance().setCategory(.playback)
-            try? AVAudioSession.sharedInstance().setActive(true)
-//            adPlayer.play()
-            mainPlayer.play()
-        }
-        .onDisappear {
-            adPlayer.pause()
-            adPlayer.replaceCurrentItem(with: nil)
-            mainPlayer.pause()
-            mainPlayer.replaceCurrentItem(with: nil)
-            try? AVAudioSession.sharedInstance().setActive(false)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { note in
-            guard let item = note.object as? AVPlayerItem,
-                  item === mainPlayer.currentItem else { return }
-            withAnimation(.easeInOut(duration: 0.35)) {
-                phase = .ad
-            }
-            mainPlayer.isMuted = false
-            adPlayer.play()
+        // TODO: InAppBrowser sheet
+        .onAppear { viewModel.onAppear(url: url) }
+        .onDisappear { viewModel.onDisappear() }
+    }
+
+    // MARK: - Layers
+
+    private static let miniWidth: CGFloat = 160
+    private static let miniHeight: CGFloat = 160 * 9 / 16
+
+    @ViewBuilder
+    private func mainPlayerLayer(size: CGSize) -> some View {
+        if let avPlayer = (viewModel.mainPlayer as? AVVideoPlayer)?.player {
+            PlayerView(
+                player: avPlayer,
+                showsPlaybackControls: !isAdPlaying,
+                allowsPictureInPicturePlayback: !isAdPlaying
+            )
+            .frame(
+                width: isAdPlaying ? Self.miniWidth : size.width,
+                height: isAdPlaying ? Self.miniHeight : size.height
+            )
+            .clipShape(RoundedRectangle(cornerRadius: isAdPlaying ? Design.CornerRadius.medium : 0))
+            .overlay(
+                RoundedRectangle(cornerRadius: isAdPlaying ? Design.CornerRadius.medium : 0)
+                    .strokeBorder(Color.white.opacity(isAdPlaying ? 0.3 : 0), lineWidth: 1)
+            )
+            .padding(isAdPlaying ? Design.Spacing.lg : 0)
+            .allowsHitTesting(!isAdPlaying)
         }
     }
+
+    @ViewBuilder
+    private func adPlayerLayer(size: CGSize) -> some View {
+        if isAdPlaying, let avPlayer = (viewModel.adPlayer as? AVVideoPlayer)?.player {
+            PlayerView(
+                player: avPlayer,
+                showsPlaybackControls: false,
+                allowsPictureInPicturePlayback: false
+            )
+            .frame(width: size.width, height: size.height)
+            .allowsHitTesting(false)
+            .transition(.opacity)
+        }
+    }
+
+   // TODO: bannerOverlay
 }
 
 #Preview {
     NavigationStack {
-        if let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8") {
-            VideoPlayerView(url: url)
-        }
+        // swiftlint:disable:next force_unwrapping
+        let url = URL(string: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!
+        VideoPlayerView(url: url)
     }
     .environment(Router())
 }

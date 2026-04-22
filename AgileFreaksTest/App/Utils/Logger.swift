@@ -4,6 +4,7 @@ enum Log {
     enum Category: String {
         case app
         case home
+        case player
     }
 
     private static let subsystem = Bundle.main.bundleIdentifier ?? "AgileFreaksTest"

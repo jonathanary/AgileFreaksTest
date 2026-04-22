@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 
 @main
@@ -7,6 +8,15 @@ struct AgileFreaksTestApp: App {
 
     init() {
         Log.debug("App init", category: .app)
+        configureAudioSession()
+    }
+
+    private func configureAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
+        } catch {
+            Log.error("Audio session setup failed: \(error.localizedDescription)", category: .player)
+        }
     }
 
     var body: some Scene {
@@ -18,6 +28,8 @@ struct AgileFreaksTestApp: App {
                             switch route {
                             case .detail(let mediaId):
                                 DetailView(mediaId: mediaId)
+                            case .videoPlayer(let url):
+                                VideoPlayerView(url: url)
                             }
                         }
                 }

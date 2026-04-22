@@ -2,6 +2,7 @@ import SwiftUI
 
 enum Route: Hashable {
     case detail(mediaId: Int)
+    case videoPlayer(url: URL)
 }
 
 @MainActor

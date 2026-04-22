@@ -26,6 +26,11 @@ identifier_name:
     - Page
     - Media
 
+type_name:
+  min_length: 3
+  excluded:
+    - Ad
+
 line_length:
   warning: 140
   error: 200

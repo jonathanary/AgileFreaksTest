@@ -107,9 +107,9 @@ private struct HomeViewPreviewContainer: View {
         }
         .environment(router)
         .font(.merriweather(.body))
-        .fullScreenCover(item: $bindableRouter.presentedVideoURL) { url in
+        .fullScreenCover(item: $bindableRouter.presentedVideo) { item in
             NavigationStack {
-                VideoPlayerView(url: url)
+                VideoPlayerView(url: item.url)
             }
             .environment(router)
         }

@@ -4,11 +4,17 @@ enum Route: Hashable {
     case detail(mediaId: Int)
 }
 
+/// Identity for `fullScreenCover(item:)` without extending `URL` (avoids SDK `Identifiable` clashes).
+struct PresentedVideo: Identifiable, Hashable {
+    let url: URL
+    var id: URL { url }
+}
+
 @MainActor
 @Observable
 final class Router {
     var path = NavigationPath()
-    var presentedVideoURL: URL?
+    var presentedVideo: PresentedVideo?
 
     func navigate(to route: Route) {
         path.append(route)
@@ -24,14 +30,10 @@ final class Router {
     }
 
     func present(video url: URL) {
-        presentedVideoURL = url
+        presentedVideo = PresentedVideo(url: url)
     }
 
     func dismissVideo() {
-        presentedVideoURL = nil
+        presentedVideo = nil
     }
-}
-
-extension URL: @retroactive Identifiable {
-    public var id: URL { self }
 }

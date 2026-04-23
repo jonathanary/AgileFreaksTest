@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import AgileFreaksTest
 
-@Suite("Router navigation", .serialized)
+@Suite("RouterTests", .serialized)
 @MainActor
 struct RouterTests {
 
@@ -44,7 +44,7 @@ struct RouterTests {
         #expect(router.path.isEmpty)
     }
 
-    @Test("present(video:) sets presentedVideoURL")
+    @Test("present(video:) sets presentedVideo")
     func presentVideoSetsURL() {
         let router = Router()
         // swiftlint:disable:next force_unwrapping
@@ -52,10 +52,10 @@ struct RouterTests {
 
         router.present(video: url)
 
-        #expect(router.presentedVideoURL == url)
+        #expect(router.presentedVideo?.url == url)
     }
 
-    @Test("dismissVideo clears presentedVideoURL without changing path")
+    @Test("dismissVideo clears presentedVideo without changing path")
     func dismissVideoClearsPresentationOnly() {
         let router = Router()
         // swiftlint:disable:next force_unwrapping
@@ -66,7 +66,7 @@ struct RouterTests {
 
         router.dismissVideo()
 
-        #expect(router.presentedVideoURL == nil)
+        #expect(router.presentedVideo == nil)
         #expect(router.path.count == 1)
     }
 }

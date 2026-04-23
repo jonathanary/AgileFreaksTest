@@ -61,9 +61,9 @@ struct AgileFreaksTestApp: App {
                     Label("Tab3", image: "tab3")
                 }
             }
-            .fullScreenCover(item: $bindableRouter.presentedVideoURL) { url in
+            .fullScreenCover(item: $bindableRouter.presentedVideo) { item in
                 NavigationStack {
-                    VideoPlayerView(url: url)
+                    VideoPlayerView(url: item.url)
                 }
                 .environment(router)
             }

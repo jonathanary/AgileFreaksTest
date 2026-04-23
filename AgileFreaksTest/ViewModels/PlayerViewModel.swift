@@ -72,7 +72,7 @@ final class PlayerViewModel {
         case .playingMain:
             mainPlayer.play()
         case .playingAd:
-            mainPlayer.play()
+            // Main stays paused while the ad runs so we do not decode two HLS streams.
             adPlayer.play()
         }
         Log.debug("Player foregrounded, resumed state=\(state)", category: .player)
@@ -83,6 +83,9 @@ final class PlayerViewModel {
     private func startAd() {
         Log.debug("Ad triggered: \(ad.name)", category: .player)
 
+        // Pause main so only one HLS pipeline is active; muted-but-still-playing
+        // keeps two AVPlayerItems decoding and spams Fig / HAL errors on Simulator.
+        mainPlayer.pause()
         mainPlayer.setMuted(true)
         adPlayer.load(url: ad.streamURL)
         adPlayer.play()
@@ -102,6 +105,7 @@ final class PlayerViewModel {
     private func endAd() {
         adPlayer.pause()
         mainPlayer.setMuted(false)
+        mainPlayer.play()
         adFinish?.cancel()
         adTicker?.cancel()
         state = .playingMain

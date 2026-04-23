@@ -1,8 +1,11 @@
 import SwiftUI
 
+private enum HomeAppearanceLog {
+    static var didMark = false
+}
+
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
-    @State private var didMarkHomeAppearance = false
     @Environment(Router.self) private var router
 
     var body: some View {
@@ -56,8 +59,8 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            guard !didMarkHomeAppearance else { return }
-            didMarkHomeAppearance = true
+            guard !HomeAppearanceLog.didMark else { return }
+            HomeAppearanceLog.didMark = true
             Log.debug("HomeView appeared", category: .home)
         }
         .task {
@@ -104,7 +107,7 @@ private struct HomeViewPreviewContainer: View {
                 }
         }
         .environment(router)
-        .environment(\.font, Font.merriweather(.body))
+        .font(.merriweather(.body))
     }
 }
 

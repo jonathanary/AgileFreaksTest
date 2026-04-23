@@ -1,10 +1,13 @@
 import AVFoundation
 import SwiftUI
 
+private enum RootAppearanceLog {
+    static var didMark = false
+}
+
 @main
 struct AgileFreaksTestApp: App {
     @State private var router = Router()
-    @State private var didMarkRootAppearance = false
 
     init() {
         Log.debug("App init", category: .app)
@@ -34,8 +37,9 @@ struct AgileFreaksTestApp: App {
                         }
                 }
                 .environment(router)
+                .font(.merriweather(.body))
                 .tabItem {
-                    Image("tab1")
+                    Label("Home", image: "tab1")
                 }
 
                 NavigationStack {
@@ -45,7 +49,7 @@ struct AgileFreaksTestApp: App {
                         .navigationTitle("Search")
                 }
                 .tabItem {
-                    Image("tab2")
+                    Label("Tab2", image: "tab2")
                 }
 
                 NavigationStack {
@@ -55,14 +59,13 @@ struct AgileFreaksTestApp: App {
                         .navigationTitle("Saved")
                 }
                 .tabItem {
-                    Image("tab3")
+                    Label("Tab3", image: "tab3")
                 }
             }
             .tint(Color.accentColor)
-            .environment(\.font, Font.merriweather(.body))
             .onAppear {
-                guard !didMarkRootAppearance else { return }
-                didMarkRootAppearance = true
+                guard !RootAppearanceLog.didMark else { return }
+                RootAppearanceLog.didMark = true
                 Log.debug("Root TabView appeared", category: .app)
             }
         }

@@ -1,11 +1,11 @@
 import SwiftUI
 
 public extension Color {
-    static let standardSectionTitle = Color(red: 17 / 255, green: 14 / 255, blue: 71 / 255)
-    static let secondaryLabel = Color(red: 170 / 255, green: 169 / 255, blue: 177 / 255)
-    static let tertiaryLabel = Color(red: 156 / 255, green: 156 / 255, blue: 156 / 255)
-    static let genreTagBackground = Color(red: 219 / 255, green: 227 / 255, blue: 255 / 255)
-    static let genreTagText = Color(red: 136 / 255, green: 164 / 255, blue: 232 / 255)
+    static let standardSectionTitle = Color(red: 17.0 / 255.0, green: 14.0 / 255.0, blue: 71.0 / 255.0)
+    static let secondaryLabel = Color(red: 170.0 / 255.0, green: 169.0 / 255.0, blue: 177.0 / 255.0)
+    static let tertiaryLabel = Color(red: 156.0 / 255.0, green: 156.0 / 255.0, blue: 156.0 / 255.0)
+    static let genreTagBackground = Color(red: 219.0 / 255.0, green: 227.0 / 255.0, blue: 255.0 / 255.0)
+    static let genreTagText = Color(red: 136.0 / 255.0, green: 164.0 / 255.0, blue: 232.0 / 255.0)
     static let skeletonFill = Color.gray.opacity(0.2)
     static let skeletonLight = Color.gray.opacity(0.15)
     static let skeletonLighter = Color.gray.opacity(0.12)

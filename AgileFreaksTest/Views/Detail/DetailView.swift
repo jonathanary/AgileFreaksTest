@@ -129,25 +129,25 @@ struct DetailView: View {
                 )
             }
 
-            if movie.trailerURL != nil {
-                Button {
-                    router.navigate(to: .videoPlayer(url: Self.trailerStreamURL))
-                } label: {
-                    VStack(spacing: Design.Spacing.xxs) {
-                        Image("playButton")
-                            .font(.system(size: Design.Banner.playIconSize))
-                            .foregroundStyle(.white)
+                if movie.trailerURL != nil {
+                    Button {
+                        router.present(video: Self.trailerStreamURL)
+                    } label: {
+                        VStack(spacing: Design.Spacing.xxs) {
+                            Image("playButton")
+                                .font(.system(size: Design.Banner.playIconSize))
+                                .foregroundStyle(.white)
 
-                        Text("Play Trailer")
-                            .font(.mulishFixed(size: Design.FontSize.caption, weight: .bold))
-                            .foregroundStyle(.white)
-                            .designShadow(Design.Shadows.playTrailer)
+                            Text("Play Trailer")
+                                .font(.mulishFixed(size: Design.FontSize.caption, weight: .bold))
+                                .foregroundStyle(.white)
+                                .designShadow(Design.Shadows.playTrailer)
+                        }
                     }
+                    .accessibilityLabel("Play trailer")
                 }
-                .accessibilityLabel("Play trailer")
             }
-        }
-        .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
     }
 
     private func movieInfo(for movie: Movie) -> some View {

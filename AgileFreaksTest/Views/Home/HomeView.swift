@@ -95,19 +95,24 @@ private struct HomeViewPreviewContainer: View {
     @State private var router = Router()
 
     var body: some View {
-        NavigationStack(path: $router.path) {
+        @Bindable var bindableRouter = router
+        NavigationStack(path: $bindableRouter.path) {
             HomeView()
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .detail(let mediaId):
                         DetailView(mediaId: mediaId)
-                    case .videoPlayer(let url):
-                        VideoPlayerView(url: url)
                     }
                 }
         }
         .environment(router)
         .font(.merriweather(.body))
+        .fullScreenCover(item: $bindableRouter.presentedVideoURL) { url in
+            NavigationStack {
+                VideoPlayerView(url: url)
+            }
+            .environment(router)
+        }
     }
 }
 

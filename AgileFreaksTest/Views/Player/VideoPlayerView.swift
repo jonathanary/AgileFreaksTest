@@ -45,7 +45,7 @@ struct VideoPlayerView: View {
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button { router.pop() } label: {
+                Button { router.dismissVideo() } label: {
                     Image(systemName: "xmark")
                         .foregroundStyle(.white)
                         .fontWeight(.semibold)
@@ -61,8 +61,13 @@ struct VideoPlayerView: View {
                     .ignoresSafeArea()
             }
         }
-        .onAppear { viewModel.onAppear(url: url) }
-        .onDisappear { viewModel.onDisappear() }
+        .task(id: url) {
+            viewModel.onAppear(url: url)
+            defer { viewModel.onDisappear() }
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(60))
+            }
+        }
     }
 
     // MARK: - Layers
@@ -75,7 +80,7 @@ struct VideoPlayerView: View {
         if let avPlayer = (viewModel.mainPlayer as? AVVideoPlayer)?.player {
             PlayerView(
                 player: avPlayer,
-                showsPlaybackControls: !isAdPlaying,
+                showsPlaybackControls: false,
                 allowsPictureInPicturePlayback: false
             )
             .frame(

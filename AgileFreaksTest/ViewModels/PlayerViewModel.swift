@@ -30,6 +30,12 @@ final class PlayerViewModel {
     // MARK: - Lifecycle
 
     func onAppear(url: URL) {
+        cancelAllSubscriptions()
+        if case .playingAd = state {
+            adPlayer.pause()
+            mainPlayer.setMuted(false)
+            state = .playingMain
+        }
         mainPlayer.load(url: url)
         mainPlayer.play()
         // Set the 15 seconds boundary
@@ -41,19 +47,26 @@ final class PlayerViewModel {
     }
 
     func onDisappear() {
-        boundary?.cancel()
-        adFinish?.cancel()
-        adTicker?.cancel()
-        bgCancellable?.cancel()
-        fgCancellable?.cancel()
+        cancelAllSubscriptions()
         mainPlayer.pause()
         adPlayer.pause()
         Log.debug("Player onDisappear", category: .player)
     }
 
-    private func subscribeToLifecycle() {
+    private func cancelAllSubscriptions() {
+        boundary?.cancel()
+        boundary = nil
+        adFinish?.cancel()
+        adFinish = nil
+        adTicker?.cancel()
+        adTicker = nil
         bgCancellable?.cancel()
+        bgCancellable = nil
         fgCancellable?.cancel()
+        fgCancellable = nil
+    }
+
+    private func subscribeToLifecycle() {
         let nc = NotificationCenter.default
         bgCancellable = nc.publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in self?.handleDidEnterBackground() }
@@ -81,6 +94,9 @@ final class PlayerViewModel {
     // MARK: - Ad swap
 
     private func startAd() {
+        boundary?.cancel()
+        boundary = nil
+
         Log.debug("Ad triggered: \(ad.name)", category: .player)
 
         // Pause main so only one HLS pipeline is active; muted-but-still-playing

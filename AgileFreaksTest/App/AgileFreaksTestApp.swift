@@ -24,15 +24,14 @@ struct AgileFreaksTestApp: App {
 
     var body: some Scene {
         WindowGroup {
+            @Bindable var bindableRouter = router
             TabView {
-                NavigationStack(path: $router.path) {
+                NavigationStack(path: $bindableRouter.path) {
                     HomeView()
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case .detail(let mediaId):
                                 DetailView(mediaId: mediaId)
-                            case .videoPlayer(let url):
-                                VideoPlayerView(url: url)
                             }
                         }
                 }
@@ -61,6 +60,12 @@ struct AgileFreaksTestApp: App {
                 .tabItem {
                     Label("Tab3", image: "tab3")
                 }
+            }
+            .fullScreenCover(item: $bindableRouter.presentedVideoURL) { url in
+                NavigationStack {
+                    VideoPlayerView(url: url)
+                }
+                .environment(router)
             }
             .tint(Color.accentColor)
             .onAppear {

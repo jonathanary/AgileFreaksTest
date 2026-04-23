@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import AgileFreaksTest
 
@@ -41,5 +42,31 @@ struct RouterTests {
 
         router.popToRoot()
         #expect(router.path.isEmpty)
+    }
+
+    @Test("present(video:) sets presentedVideoURL")
+    func presentVideoSetsURL() {
+        let router = Router()
+        // swiftlint:disable:next force_unwrapping
+        let url = URL(string: "https://example.com/video.m3u8")!
+
+        router.present(video: url)
+
+        #expect(router.presentedVideoURL == url)
+    }
+
+    @Test("dismissVideo clears presentedVideoURL without changing path")
+    func dismissVideoClearsPresentationOnly() {
+        let router = Router()
+        // swiftlint:disable:next force_unwrapping
+        let url = URL(string: "https://example.com/video.m3u8")!
+        router.navigate(to: .detail(mediaId: 1))
+        router.present(video: url)
+        #expect(router.path.count == 1)
+
+        router.dismissVideo()
+
+        #expect(router.presentedVideoURL == nil)
+        #expect(router.path.count == 1)
     }
 }
